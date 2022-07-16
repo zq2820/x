@@ -329,7 +329,7 @@ func Render(el Element, container dom.Element) Element {
 	return &elementHolder{Elem: v}
 }
 
-func CreateElementCustom(cmp interface{}, props interface{}, children ...Element) Element {
+func CreateFunctionElement(cmp interface{}, props interface{}, children ...Element) Element {
 	args := []interface{}{cmp, props}
 
 	for _, v := range children {
@@ -355,4 +355,10 @@ func UseRef(val ...interface{}) js.Object {
 	v := react.Call(useRef, val...)
 
 	return *v
+}
+
+type FunctionComponentDef struct{}
+
+type FunctionComponent interface {
+	Default(props Props, children ...Element)
 }
