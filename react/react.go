@@ -357,7 +357,8 @@ func UseRef(val ...interface{}) js.Object {
 	return *v
 }
 
-type FunctionComponentDef struct{}
+type FunctionComponentDef struct {
+}
 
 type FunctionComponent interface {
 	Default(props Props, children ...Element)
