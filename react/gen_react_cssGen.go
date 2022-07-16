@@ -16,6 +16,7 @@ type CSS struct {
 	FontWeight string
 	Height     string
 	Left       string
+	Margin		 string
 	MarginTop  string
 	MaxHeight  string
 	MinHeight  string
@@ -32,28 +33,67 @@ type CSS struct {
 // https://github.com/gopherjs/gopherjs/issues/236 we define hack() below
 
 func (c *CSS) hack() *CSS {
+	return Hack(c)
+}
+
+func Hack(c *CSS) *CSS {
 	if c == nil {
 		return nil
 	}
 
 	o := object.New()
 
-	o.Set("float", c.Float)
-	o.Set("fontSize", c.FontSize)
-	o.Set("fontStyle", c.FontStyle)
-	o.Set("fontWeight", c.FontWeight)
-	o.Set("height", c.Height)
-	o.Set("left", c.Left)
-	o.Set("marginTop", c.MarginTop)
-	o.Set("maxHeight", c.MaxHeight)
-	o.Set("minHeight", c.MinHeight)
-	o.Set("overflow", c.Overflow)
-	o.Set("overflowY", c.OverflowY)
-	o.Set("position", c.Position)
-	o.Set("resize", c.Resize)
-	o.Set("top", c.Top)
-	o.Set("width", c.Width)
-	o.Set("zIndex", c.ZIndex)
+	if c.Float != "" {
+		o.Set("float", c.Float)
+	}
+	if c.FontSize != "" {
+		o.Set("fontSize", c.FontSize)
+	}
+	if c.FontStyle != "" {
+		o.Set("fontStyle", c.FontStyle)
+	}
+	if c.FontWeight != "" {
+		o.Set("fontWeight", c.FontWeight)
+	}
+	if c.Height != "" {
+		o.Set("height", c.Height)
+	}
+	if c.Left != "" {
+		o.Set("left", c.Left)
+	}
+	if c.Margin != "" {
+		o.Set("margin", c.Margin)
+	}
+	if c.MarginTop != "" {
+		o.Set("marginTop", c.MarginTop)
+	}
+	if c.MaxHeight != "" {
+		o.Set("maxHeight", c.MaxHeight)
+	}
+	if c.MinHeight != "" {
+		o.Set("minHeight", c.MinHeight)
+	}
+	if c.Overflow != "" {
+		o.Set("overflow", c.Overflow)
+	}
+	if c.OverflowY != "" {
+		o.Set("overflowY", c.OverflowY)
+	}
+	if c.Position != "" {
+		o.Set("position", c.Position)
+	}
+	if c.Resize != "" {
+		o.Set("resize", c.Resize)
+	}
+	if c.Top != "" {
+		o.Set("top", c.Top)
+	}
+	if c.Width != "" {
+		o.Set("width", c.Width)
+	}
+	if c.ZIndex != "" {
+		o.Set("zIndex", c.ZIndex)
+	}
 
 	return &CSS{o: o}
 }

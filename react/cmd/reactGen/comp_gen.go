@@ -271,36 +271,29 @@ func (g *gen) genComp(defName string) {
 
 	cg.pt(`
 {{ $cg := . }}
-
 type {{.Name}}Elem struct {
 	react.Element
 }
-
 {{range $rm := .RendersMethods }}
 func ({{$cg.Recv}} *{{$cg.Name}}Elem) {{$rm.Name}}({{$rm.Type}}) {}
 {{end}}
-
 {{if .RendersMethods}}
 func ({{$cg.Recv}} *{{$cg.Name}}Elem) noop() {
 	var v {{.Name}}Def
 	r := v.Render()
-
 	{{range $rm := .RendersMethods }}
 	v.{{$rm.Name}}(r)
 	{{end -}}
 }
 {{end}}
-
 func build{{.Name}}(cd react.ComponentDef) react.Component {
 	return {{.Name}}Def{ComponentDef: cd}
 }
-
 func build{{.Name}}Elem({{if .HasProps}}props {{.Name}}Props,{{end}} children ...react.Element) *{{.Name}}Elem {
 	return &{{.Name}}Elem{
 		Element: react.CreateElement(build{{.Name}}, {{if .HasProps}}props{{else}}nil{{end}}, children...),
 	}
 }
-
 func ({{.Recv}} {{.Name}}Def) RendersElement() react.Element {
 	{{if .RendersSlice -}}
 	rr := t.Render()
@@ -313,7 +306,6 @@ func ({{.Recv}} {{.Name}}Def) RendersElement() react.Element {
 	return {{.Recv}}.Render()
 	{{end -}}
 }
-
 {{if .HasState}}
 // SetState is an auto-generated proxy proxy to update the state for the
 // {{.Name}} component.  SetState does not immediately mutate {{.Recv}}.State()
@@ -321,19 +313,15 @@ func ({{.Recv}} {{.Name}}Def) RendersElement() react.Element {
 func ({{.Recv}} {{.Name}}Def) SetState(state {{.Name}}State) {
 	{{.Recv}}.ComponentDef.SetState(state)
 }
-
 // State is an auto-generated proxy to return the current state in use for the
 // render of the {{.Name}} component
 func ({{.Recv}} {{.Name}}Def) State() {{.Name}}State {
 	return {{.Recv}}.ComponentDef.State().({{.Name}}State)
 }
-
 // IsState is an auto-generated definition so that {{.Name}}State implements
 // the myitcv.io/react.State interface.
 func ({{.Recv}} {{.Name}}State) IsState() {}
-
 var _ react.State = {{.Name}}State{}
-
 // GetInitialStateIntf is an auto-generated proxy to GetInitialState
 func ({{.Recv}} {{.Name}}Def) GetInitialStateIntf() react.State {
 {{if .HasGetInitState -}}
@@ -342,7 +330,6 @@ func ({{.Recv}} {{.Name}}Def) GetInitialStateIntf() react.State {
 	return {{.Name}}State{}
 {{end -}}
 }
-
 func ({{.Recv}} {{.Name}}State) EqualsIntf(val react.State) bool {
 	{{if .StateHasEquals -}}
 	return {{.Recv}}.Equals(val.({{.Name}}State))
@@ -351,19 +338,15 @@ func ({{.Recv}} {{.Name}}State) EqualsIntf(val react.State) bool {
 	{{end -}}
 }
 {{end}}
-
-
 {{if .HasProps}}
 // IsProps is an auto-generated definition so that {{.Name}}Props implements
 // the myitcv.io/react.Props interface.
 func ({{.Recv}} {{.Name}}Props) IsProps() {}
-
 // Props is an auto-generated proxy to the current props of {{.Name}}
 func ({{.Recv}} {{.Name}}Def) Props() {{.Name}}Props {
 	uprops := {{.Recv}}.ComponentDef.Props()
 	return uprops.({{.Name}}Props)
 }
-
 {{if .HasComponentWillReceiveProps}}
 // ComponentWillReceivePropsIntf is an auto-generated proxy to
 // ComponentWillReceiveProps
@@ -372,7 +355,6 @@ func ({{.Recv}} {{.Name}}Def) ComponentWillReceivePropsIntf(val interface{}) {
 	{{.Recv}}.ComponentWillReceiveProps(ourProps)
 }
 {{end}}
-
 func ({{.Recv}} {{.Name}}Props) EqualsIntf(val react.Props) bool {
 	{{if .PropsHasEquals -}}
 	return {{.Recv}}.Equals(val.({{.Name}}Props))
@@ -380,7 +362,6 @@ func ({{.Recv}} {{.Name}}Props) EqualsIntf(val react.Props) bool {
 	return {{.Recv}} == val.({{.Name}}Props)
 	{{end -}}
 }
-
 var _ react.Props = {{.Name}}Props{}
 {{end}}
 	`, cg)

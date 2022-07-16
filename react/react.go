@@ -18,10 +18,9 @@ import (
 	"fmt"
 	"reflect"
 
-	"honnef.co/go/js/dom"
-
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/jsbuiltin"
+	"honnef.co/go/js/dom"
 
 	// imported for the side effect of bundling react
 	// build tags control whether this actually includes
@@ -45,6 +44,11 @@ const (
 	reactCompComponentWillMount        = "componentWillMount"
 	reactCompComponentWillUnmount      = "componentWillUnmount"
 	reactCompRender                    = "render"
+
+	/** hooks */
+	useState  = "useState"
+	useEffect = "useEffect"
+	useRef    = "useRef"
 
 	reactCreateElement = "createElement"
 	reactCreateClass   = "createClass"
@@ -323,4 +327,32 @@ func Render(el Element, container dom.Element) Element {
 	v := reactDOM.Call(reactDOMRender, el, container)
 
 	return &elementHolder{Elem: v}
+}
+
+func CreateElementCustom(cmp interface{}, props interface{}, children ...Element) Element {
+	args := []interface{}{cmp, props}
+
+	for _, v := range children {
+		args = append(args, v)
+	}
+
+	return &elementHolder{
+		Elem: react.Call(reactCreateElement, args...),
+	}
+}
+
+func UseState(val ...interface{}) [2]*js.Object {
+	v := react.Call(useState, val...)
+
+	return [2]*js.Object{v.Index(0), v.Index(1)}
+}
+
+func UseEffect(cb func() func(), deps []*js.Object) {
+	react.Call(useEffect, cb, deps)
+}
+
+func UseRef(val ...interface{}) js.Object {
+	v := react.Call(useRef, val...)
+
+	return *v
 }
