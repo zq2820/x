@@ -1,3 +1,5 @@
 /.bin
 .vbash*
 /.gobincache
+
+node_modules/
