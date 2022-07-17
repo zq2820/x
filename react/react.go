@@ -329,8 +329,17 @@ func Render(el Element, container dom.Element) Element {
 	return &elementHolder{Elem: v}
 }
 
-func CreateFunctionElement(cmp interface{}, props interface{}, children ...Element) Element {
-	args := []interface{}{cmp, props}
+func CreateFunctionElement(cmp interface{}, props Props, children ...Element) Element {
+	propsWrap := object.New()
+	if props != nil {
+		propsWrap.Set(nestedProps, wrapValue(&props))
+	}
+
+	if children != nil {
+		propsWrap.Set(nestedChildren, wrapValue(&children))
+	}
+
+	args := []interface{}{cmp, propsWrap}
 
 	for _, v := range children {
 		args = append(args, v)
