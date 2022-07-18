@@ -353,10 +353,10 @@ func CreateFunctionElement(cmp FunctionComponent, props Props, children ...Eleme
 	}
 }
 
-func UseState(val ...interface{}) [2]*js.Object {
+func UseState(val ...interface{}) (*js.Object, *js.Object) {
 	v := react.Call(useState, val...)
 
-	return [2]*js.Object{v.Index(0), v.Index(1)}
+	return v.Index(0), v.Index(1)
 }
 
 func UseEffect(cb func() func(), deps []*js.Object) {
