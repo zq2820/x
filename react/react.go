@@ -123,6 +123,9 @@ type State interface {
 }
 
 func (c ComponentDef) Props() Props {
+	if c.elem.Get(reactCompProps).Get(nestedProps) == js.Undefined {
+		return nil
+	}
 	return *(unwrapValue(c.elem.Get(reactCompProps).Get(nestedProps)).(*Props))
 }
 
@@ -329,17 +332,17 @@ func Render(el Element, container dom.Element) Element {
 	return &elementHolder{Elem: v}
 }
 
-func CreateFunctionElement(cmp interface{}, props Props, children ...Element) Element {
+func CreateFunctionElement(cmp FunctionComponent, props Props, children ...Element) Element {
 	propsWrap := object.New()
 	if props != nil {
-		propsWrap.Set(nestedProps, wrapValue(&props))
+		propsWrap.Set(nestedProps, wrapValue(props))
 	}
 
 	if children != nil {
-		propsWrap.Set(nestedChildren, wrapValue(&children))
+		propsWrap.Set(nestedChildren, wrapValue(children))
 	}
 
-	args := []interface{}{cmp, propsWrap}
+	args := []interface{}{cmp.Default, propsWrap}
 
 	for _, v := range children {
 		args = append(args, v)
@@ -366,9 +369,10 @@ func UseRef(val ...interface{}) js.Object {
 	return *v
 }
 
-type FunctionComponentDef struct {
-}
-
 type FunctionComponent interface {
 	Default(props Props, children ...Element)
+}
+
+func UnwrapValue(props *js.Object) interface{} {
+	return unwrapValue(props)
 }
