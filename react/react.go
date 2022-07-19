@@ -84,7 +84,7 @@ type elementHolder = core.ElementHolder
 type Element = core.Element
 
 type Component interface {
-	RendersElement() Element
+	Render() Element
 }
 
 type componentWithWillMount interface {
@@ -318,7 +318,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 		elem := this
 		cmp := builder(ComponentDef{elem: elem})
 
-		renderRes := cmp.RendersElement()
+		renderRes := cmp.Render()
 
 		return renderRes
 	}))
@@ -332,7 +332,7 @@ func Render(el Element, container dom.Element) Element {
 	return &elementHolder{Elem: v}
 }
 
-func CreateFunctionElement(cmp FunctionComponent, props Props, children ...Element) Element {
+func CreateFunctionElement[T Props](cmp FunctionComponent[T], props Props, children ...Element) Element {
 	propsWrap := object.New()
 	if props != nil {
 		propsWrap.Set(nestedProps, wrapValue(props))
@@ -342,7 +342,7 @@ func CreateFunctionElement(cmp FunctionComponent, props Props, children ...Eleme
 		propsWrap.Set(nestedChildren, wrapValue(children))
 	}
 
-	args := []interface{}{cmp.Default, propsWrap}
+	args := []interface{}{cmp.HackRender, propsWrap}
 
 	for _, v := range children {
 		args = append(args, v)
@@ -369,8 +369,9 @@ func UseRef(val ...interface{}) js.Object {
 	return *v
 }
 
-type FunctionComponent interface {
-	Default(props Props, children ...Element)
+type FunctionComponent[T Props] interface {
+	HackRender(props *js.Object) Element
+	Default(props *T, children ...Element) Element
 }
 
 func UnwrapValue(props *js.Object) interface{} {
