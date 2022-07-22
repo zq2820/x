@@ -168,7 +168,71 @@ func (c ComponentDef) ForceUpdate() {
 
 type ComponentBuilder func(elem ComponentDef) Component
 
-func CreateElement(buildCmp ComponentBuilder, newprops Props, children ...Element) Element {
+type HotComponent struct {
+	ComponentDef
+	render            func() Element
+	componentDidMount func()
+}
+
+func (a HotComponent) Render() Element {
+	return a.render()
+}
+
+func (a HotComponent) ComponentDidMount() {
+	if a.componentDidMount != nil {
+		a.componentDidMount()
+	}
+}
+
+func createElementNext[T any](instance T, newprops Props, children ...Element) Element {
+	var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
+		reflect.ValueOf(instance).Elem().FieldByName("ComponentDef").Set(reflect.ValueOf(elem))
+		return reflect.ValueOf(instance).Interface().(Component)
+	}
+	cmp := buildCmp(ComponentDef{})
+	typ := reflect.TypeOf(cmp)
+
+	comp, ok := compMap[typ]
+	if !ok {
+		comp = buildReactComponent(typ, buildCmp)
+		compMap[typ] = comp
+	}
+
+	propsWrap := object.New()
+	if newprops != nil {
+		propsWrap.Set(nestedProps, wrapValue(&newprops))
+	}
+
+	if children != nil {
+		propsWrap.Set(nestedChildren, wrapValue(&children))
+	}
+
+	args := []interface{}{comp, propsWrap}
+
+	for _, v := range children {
+		args = append(args, v)
+	}
+
+	return &elementHolder{
+		Elem: react.Call(reactCreateElement, args...),
+	}
+}
+
+func CreateElement[T any](instance T, newprops Props, children ...Element) Element {
+	var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
+		if true {
+			hot := HotComponent{ComponentDef: elem}
+
+			hot.render = func() Element {
+				js.Debugger()
+				return createElementNext(instance, newprops, children...)
+			}
+			return reflect.ValueOf(hot).Interface().(Component)
+		} else {
+			reflect.ValueOf(instance).Elem().FieldByName("ComponentDef").Set(reflect.ValueOf(elem))
+			return reflect.ValueOf(instance).Interface().(Component)
+		}
+	}
 	cmp := buildCmp(ComponentDef{})
 	typ := reflect.TypeOf(cmp)
 
