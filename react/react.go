@@ -20,6 +20,7 @@ import (
 
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/jsbuiltin"
+	"honnef.co/go/js/console"
 	"honnef.co/go/js/dom"
 
 	// imported for the side effect of bundling react
@@ -190,7 +191,7 @@ func createElementNext[T any](instance T, newprops Props, children ...Element) E
 		return reflect.ValueOf(instance).Interface().(Component)
 	}
 	cmp := buildCmp(ComponentDef{})
-	typ := reflect.TypeOf(cmp)
+	typ := reflect.TypeOf(cmp).Elem()
 
 	comp, ok := compMap[typ]
 	if !ok {
@@ -224,7 +225,6 @@ func CreateElement[T any](instance T, newprops Props, children ...Element) Eleme
 			hot := HotComponent{ComponentDef: elem}
 
 			hot.render = func() Element {
-				js.Debugger()
 				return createElementNext(instance, newprops, children...)
 			}
 			return reflect.ValueOf(hot).Interface().(Component)
@@ -406,7 +406,13 @@ func CreateFunctionElement[T Props](cmp FunctionComponent[T], props Props, child
 		propsWrap.Set(nestedChildren, wrapValue(children))
 	}
 
-	args := []interface{}{cmp.HackRender, propsWrap}
+	fun := js.MakeWrapper(cmp)
+	fun.Set("HackRender", js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+		console.Log(arguments)
+		return cmp.HackRender(arguments[0])
+	}, "Test"))
+
+	args := []interface{}{fun.Get("HackRender"), propsWrap}
 
 	for _, v := range children {
 		args = append(args, v)

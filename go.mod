@@ -7,7 +7,7 @@ require (
 	github.com/Quasilyte/inltest v0.7.0
 	github.com/golang/protobuf v1.2.0
 	github.com/google/go-github/v21 v21.0.0
-	github.com/gopherjs/gopherjs v0.0.0-20180628210949-0892b62f0d9f
+	github.com/gopherjs/gopherjs v1.17.2
 	github.com/gopherjs/jsbuiltin v0.0.0-20180426082241-50091555e127
 	github.com/jteeuwen/go-bindata v3.0.7+incompatible
 	github.com/kisielk/gotool v1.0.0
@@ -56,4 +56,4 @@ require (
 	mvdan.cc/sh/v3 v3.0.0-alpha1 // indirect
 )
 
-replace github.com/gopherjs/gopherjs => github.com/myitcv/gopherjs v1.12.0
+replace github.com/gopherjs/gopherjs v1.17.2 => github.com/zq2820/gopherjs v0.0.0-20220723032639-dc19da74ec84
