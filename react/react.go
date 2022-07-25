@@ -18,9 +18,9 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/gopherjs/gopherjs/chunks"
 	"github.com/gopherjs/gopherjs/js"
 	"github.com/gopherjs/jsbuiltin"
-	"honnef.co/go/js/console"
 	"honnef.co/go/js/dom"
 
 	// imported for the side effect of bundling react
@@ -71,7 +71,7 @@ type ComponentDef struct {
 	elem *js.Object
 }
 
-var compMap = make(map[reflect.Type]*js.Object)
+var compMap = make(map[reflect.StructTag]*js.Object)
 
 // S is the React representation of a string
 type S = core.S
@@ -127,7 +127,7 @@ func (c ComponentDef) Props() Props {
 	if c.elem.Get(reactCompProps).Get(nestedProps) == js.Undefined {
 		return nil
 	}
-	return *(unwrapValue(c.elem.Get(reactCompProps).Get(nestedProps)).(*Props))
+	return unwrapValue(c.elem.Get(reactCompProps).Get(nestedProps)).(Props)
 }
 
 func (c ComponentDef) Children() []Element {
@@ -171,37 +171,62 @@ type ComponentBuilder func(elem ComponentDef) Component
 
 type HotComponent struct {
 	ComponentDef
-	render            func() Element
-	componentDidMount func()
+	module string
+	render func(a *HotComponent) Element
 }
 
-func (a HotComponent) Render() Element {
-	return a.render()
+func (a *HotComponent) Render() Element {
+	return a.render(a)
 }
 
-func (a HotComponent) ComponentDidMount() {
-	if a.componentDidMount != nil {
-		a.componentDidMount()
+func (a *HotComponent) ComponentDidMount() {
+	dependencies := js.Global.Get("dependencies")
+	if dependencies.Get(a.module) == js.Undefined {
+		dependencies.Set(a.module, js.Global.Get("Array").New())
 	}
+	a.elem.Set("_comp", wrapValue(a))
+	dependencies.Get(a.module).Call("push", a.elem.Get("_comp"))
 }
 
-func createElementNext[T any](instance T, newprops Props, children ...Element) Element {
+func (a *HotComponent) ForceUpdate() {
+	if a.module != "" {
+		delete(compMap, reflect.StructTag(a.module))
+	}
+	a.ComponentDef.ForceUpdate()
+}
+
+func (a *HotComponent) ComponentWillUnmount() {
+	dependencies := js.Global.Get("dependencies")
+	dependencies.Get(a.module).Call("forEach", js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+		if a.elem.Get("_comp") == arguments[0] {
+			dependencies.Get(a.module).Call("splice", arguments[1], 1)
+		}
+		return nil
+	}))
+}
+
+func createElementNext[T any, P Props](instance T, newprops P, children ...Element) Element {
 	var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
 		reflect.ValueOf(instance).Elem().FieldByName("ComponentDef").Set(reflect.ValueOf(elem))
 		return reflect.ValueOf(instance).Interface().(Component)
 	}
 	cmp := buildCmp(ComponentDef{})
 	typ := reflect.TypeOf(cmp).Elem()
-
-	comp, ok := compMap[typ]
-	if !ok {
+	field, _ := typ.FieldByName("ComponentDef")
+	var comp *js.Object
+	if field.Tag != "" {
+		comp = compMap[field.Tag]
+		if comp == nil {
+			comp = buildReactComponent(typ, buildCmp)
+			compMap[field.Tag] = comp
+		}
+	} else {
 		comp = buildReactComponent(typ, buildCmp)
-		compMap[typ] = comp
 	}
 
 	propsWrap := object.New()
-	if newprops != nil {
-		propsWrap.Set(nestedProps, wrapValue(&newprops))
+	if reflect.ValueOf(newprops).Interface() != nil {
+		propsWrap.Set(nestedProps, wrapValue(newprops))
 	}
 
 	if children != nil {
@@ -219,46 +244,102 @@ func createElementNext[T any](instance T, newprops Props, children ...Element) E
 	}
 }
 
-func CreateElement[T any](instance T, newprops Props, children ...Element) Element {
-	var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
-		if true {
-			hot := HotComponent{ComponentDef: elem}
-
-			hot.render = func() Element {
-				return createElementNext(instance, newprops, children...)
+func CreateElement[T any, P Props](instance T, newprops P, children ...Element) Element {
+	if _, ok := reflect.ValueOf(instance).Elem().Interface().(FunctionComponent[P]); !ok {
+		var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
+			if chunks.IsWatch {
+				field, _ := reflect.TypeOf(instance).Elem().FieldByName("ComponentDef")
+				hot := &HotComponent{ComponentDef: elem, module: string(field.Tag)}
+				hot.render = func(a *HotComponent) Element {
+					return createElementNext(reflect.ValueOf(chunks.GoChunks[string(field.Tag)]).Interface().(func() interface{})(), a.Props(), a.Children()...)
+				}
+				return reflect.ValueOf(hot).Interface().(Component)
+			} else {
+				reflect.ValueOf(instance).Elem().FieldByName("ComponentDef").Set(reflect.ValueOf(elem))
+				return reflect.ValueOf(instance).Interface().(Component)
 			}
-			return reflect.ValueOf(hot).Interface().(Component)
-		} else {
-			reflect.ValueOf(instance).Elem().FieldByName("ComponentDef").Set(reflect.ValueOf(elem))
-			return reflect.ValueOf(instance).Interface().(Component)
 		}
-	}
-	cmp := buildCmp(ComponentDef{})
-	typ := reflect.TypeOf(cmp)
 
-	comp, ok := compMap[typ]
-	if !ok {
-		comp = buildReactComponent(typ, buildCmp)
-		compMap[typ] = comp
-	}
+		cmp := buildCmp(ComponentDef{})
+		typ := reflect.TypeOf(cmp).Elem()
+		field, _ := typ.FieldByName("ComponentDef")
+		var comp *js.Object
+		if field.Tag != "" {
+			comp = compMap[field.Tag]
+			if comp == nil {
+				typ := reflect.TypeOf(cmp)
+				comp = buildReactComponent(typ, buildCmp)
+				compMap[field.Tag] = comp
+			}
+		} else {
+			comp = buildReactComponent(typ, buildCmp)
+		}
 
-	propsWrap := object.New()
-	if newprops != nil {
-		propsWrap.Set(nestedProps, wrapValue(&newprops))
-	}
+		propsWrap := object.New()
+		if reflect.ValueOf(newprops).Interface() != nil {
+			propsWrap.Set(nestedProps, wrapValue(newprops))
+		}
 
-	if children != nil {
-		propsWrap.Set(nestedChildren, wrapValue(&children))
-	}
+		if children != nil {
+			propsWrap.Set(nestedChildren, wrapValue(&children))
+		}
 
-	args := []interface{}{comp, propsWrap}
+		args := []interface{}{comp, propsWrap}
 
-	for _, v := range children {
-		args = append(args, v)
-	}
+		for _, v := range children {
+			args = append(args, v)
+		}
 
-	return &elementHolder{
-		Elem: react.Call(reactCreateElement, args...),
+		return &elementHolder{
+			Elem: react.Call(reactCreateElement, args...),
+		}
+	} else {
+		if chunks.IsWatch {
+			field, _ := reflect.TypeOf(instance).Elem().FieldByName("FunctionComponent")
+			var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
+				hot := &HotComponent{ComponentDef: elem, module: string(field.Tag)}
+				hot.render = func(a *HotComponent) Element {
+					return CreateFunctionElement(
+						reflect.ValueOf(
+							reflect.ValueOf(
+								chunks.GoChunks[string(field.Tag)],
+							).Interface().(func() interface{})(),
+						).Elem().Interface().(FunctionComponent[P]),
+						reflect.ValueOf(newprops).Interface().(P),
+						a.Children()...,
+					)
+				}
+				return reflect.ValueOf(hot).Interface().(Component)
+			}
+
+			cmp := buildCmp(ComponentDef{})
+			typ := reflect.TypeOf(cmp).Elem()
+			comp := buildReactComponent(typ, buildCmp)
+			propsWrap := object.New()
+			if reflect.ValueOf(newprops).Interface() != nil {
+				propsWrap.Set(nestedProps, wrapValue(newprops))
+			}
+
+			if children != nil {
+				propsWrap.Set(nestedChildren, wrapValue(&children))
+			}
+
+			args := []interface{}{comp, propsWrap}
+
+			for _, v := range children {
+				args = append(args, v)
+			}
+
+			return &elementHolder{
+				Elem: react.Call(reactCreateElement, args...),
+			}
+		} else {
+			return CreateFunctionElement(
+				reflect.ValueOf(instance).Interface().(FunctionComponent[P]),
+				newprops,
+				children...,
+			)
+		}
 	}
 }
 
@@ -313,7 +394,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 			if p := this.Get(reactCompProps); p != nil {
 				if ok, err := jsbuiltin.In(nestedProps, p); err == nil && ok {
 					if v := (p.Get(nestedProps)); v != nil {
-						curProps = *(unwrapValue(v).(*Props))
+						curProps = unwrapValue(v).(Props)
 					}
 				} else {
 					return false
@@ -323,7 +404,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 
 		if arguments[0] != nil {
 			if ok, err := jsbuiltin.In(nestedProps, arguments[0]); err == nil && ok {
-				nextProps = *(unwrapValue(arguments[0].Get(nestedProps)).(*Props))
+				nextProps = unwrapValue(arguments[0].Get(nestedProps)).(Props)
 			}
 		}
 
@@ -346,7 +427,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 		cmp := builder(ComponentDef{elem: elem})
 
 		if cmp, ok := cmp.(componentWithWillReceiveProps); ok {
-			ourProps := *(unwrapValue(arguments[0].Get(nestedProps)).(*Props))
+			ourProps := unwrapValue(arguments[0].Get(nestedProps)).(Props)
 			cmp.ComponentWillReceivePropsIntf(ourProps)
 		}
 
@@ -396,9 +477,9 @@ func Render(el Element, container dom.Element) Element {
 	return &elementHolder{Elem: v}
 }
 
-func CreateFunctionElement[T Props](cmp FunctionComponent[T], props Props, children ...Element) Element {
+func CreateFunctionElement[P Props](cmp FunctionComponent[P], props P, children ...Element) Element {
 	propsWrap := object.New()
-	if props != nil {
+	if reflect.ValueOf(props).Interface() != nil {
 		propsWrap.Set(nestedProps, wrapValue(props))
 	}
 
@@ -407,10 +488,9 @@ func CreateFunctionElement[T Props](cmp FunctionComponent[T], props Props, child
 	}
 
 	fun := js.MakeWrapper(cmp)
-	fun.Set("HackRender", js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
-		console.Log(arguments)
+	fun.Set("HackRender", makeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		return cmp.HackRender(arguments[0])
-	}, "Test"))
+	}, reflect.TypeOf(cmp).Name()))
 
 	args := []interface{}{fun.Get("HackRender"), propsWrap}
 
@@ -439,11 +519,15 @@ func UseRef(val ...interface{}) js.Object {
 	return *v
 }
 
-type FunctionComponent[T Props] interface {
+type FunctionComponent[P Props] interface {
 	HackRender(props *js.Object) Element
-	Default(props *T, children ...Element) Element
+	Default(props P, children ...Element) Element
 }
 
 func UnwrapValue(props *js.Object) interface{} {
 	return unwrapValue(props)
+}
+
+func makeFunc(fn func(this *js.Object, arguments []*js.Object) interface{}, name string) *js.Object {
+	return js.Global.Call("$makeFunc", js.InternalObject(fn), name)
 }

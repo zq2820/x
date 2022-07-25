@@ -17,43 +17,75 @@ require (
 	github.com/rogpeppe/go-internal v1.2.2
 	github.com/russross/blackfriday v1.5.1
 	github.com/sclevine/agouti v3.0.0+incompatible
-	golang.org/x/net v0.0.0-20190311183353-d8887717615a
+	golang.org/x/net v0.0.0-20220722155237-a158d28d115b
 	golang.org/x/oauth2 v0.0.0-20181017192945-9dcd33a902f4
-	golang.org/x/tools v0.0.0-20190328211700-ab21143f2384
-	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127
+	golang.org/x/tools v0.1.11
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
 	gopkg.in/fsnotify/fsnotify.v1 v1.4.7
-	honnef.co/go/js/dom v0.0.0-20180323154144-6da835bec70f
+	honnef.co/go/js/console v0.0.0-20150119023344-105276c43558
+	honnef.co/go/js/dom v0.0.0-20210725211120-f030747120f2
 	honnef.co/go/js/xhr v0.0.0-20150307031022-00e3346113ae
 	mvdan.cc/sh v2.6.0+incompatible
 )
 
 require (
+	github.com/Microsoft/go-winio v0.5.2 // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20220714114130-e85cedf506cd // indirect
+	github.com/acomagu/bufpipe v1.0.3 // indirect
+	github.com/emirpasic/gods v1.18.1 // indirect
+	github.com/go-git/gcfg v1.5.0 // indirect
+	github.com/go-git/go-billy/v5 v5.3.1 // indirect
+	github.com/go-git/go-git/v5 v5.4.2 // indirect
+	github.com/imdario/mergo v0.3.13 // indirect
+	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
+	github.com/kevinburke/ssh_config v1.2.0 // indirect
+	github.com/mitchellh/go-homedir v1.1.0 // indirect
+	github.com/sergi/go-diff v1.2.0 // indirect
+	github.com/src-d/gcfg v1.4.0 // indirect
+	github.com/xanzy/ssh-agent v0.3.1 // indirect
+	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
+	gopkg.in/warnings.v0 v0.1.2 // indirect
+)
+
+require (
 	github.com/cockroachdb/apd/v2 v2.0.1 // indirect
-	github.com/fsnotify/fsnotify v1.4.7 // indirect
+	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
+	github.com/gorilla/css v1.0.0 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/kr/pretty v0.1.0 // indirect
-	github.com/kr/text v0.1.0 // indirect
+	github.com/kr/pretty v0.2.1 // indirect
+	github.com/kr/text v0.2.0 // indirect
 	github.com/mpvl/unique v0.0.0-20150818121801-cbe035fff7de // indirect
 	github.com/neelance/astrewrite v0.0.0-20160511093645-99348263ae86 // indirect
-	github.com/neelance/sourcemap v0.0.0-20151028013722-8c68805598ab // indirect
+	github.com/neelance/sourcemap v0.0.0-20200213170602-2833bce08e4c // indirect
 	github.com/onsi/ginkgo v1.7.0 // indirect
 	github.com/onsi/gomega v1.4.3 // indirect
-	github.com/pkg/errors v0.8.1 // indirect
-	github.com/shurcooL/httpfs v0.0.0-20181222201310-74dc9339e414 // indirect
-	github.com/shurcooL/vfsgen v0.0.0-20180915214035-33ae1944be3f // indirect
-	github.com/spf13/cobra v0.0.3 // indirect
-	github.com/spf13/pflag v1.0.3 // indirect
-	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2 // indirect
-	golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a // indirect
-	golang.org/x/text v0.3.2 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749 // indirect
+	github.com/sirupsen/logrus v1.8.1 // indirect
+	github.com/speps/go-hashids/v2 v2.0.1 // indirect
+	github.com/spf13/cobra v1.5.0 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/tdewolff/minify/v2 v2.11.11 // indirect
+	github.com/tdewolff/parse/v2 v2.6.0 // indirect
+	github.com/vanng822/css v1.0.1 // indirect
+	github.com/wellington/go-libsass v0.9.2 // indirect
+	github.com/yuin/goldmark v1.4.1 // indirect
+	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
+	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
+	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
+	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
+	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
+	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20190717185122-a985d3407aa7 // indirect
 	google.golang.org/appengine v1.1.0 // indirect
 	gopkg.in/errgo.v2 v2.1.0 // indirect
-	gopkg.in/yaml.v2 v2.2.2 // indirect
+	gopkg.in/src-d/go-git.v4 v4.13.1
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	honnef.co/go/js/util v0.0.0-20150216223935-96b8dd9d1621 // indirect
 	mvdan.cc/sh/v3 v3.0.0-alpha1 // indirect
 )
 
-replace github.com/gopherjs/gopherjs v1.17.2 => github.com/zq2820/gopherjs v0.0.0-20220723032639-dc19da74ec84
+replace github.com/gopherjs/gopherjs v1.17.2 => github.com/zq2820/gopherjs v0.0.0-20220725102315-bdd1f0235514

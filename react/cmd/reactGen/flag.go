@@ -4,14 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"os"
-
-	"myitcv.io/gogenerate"
 )
 
 var (
-	fLicenseFile = gogenerate.LicenseFileFlag(flag.CommandLine)
-	fGoGenLog    = gogenerate.LogFlag(flag.CommandLine)
-	fInit        initFlag
+	fInit initFlag
 )
 
 type initFlag struct {
@@ -42,7 +38,6 @@ func usage() {
 
 	l("Usage:")
 	f("\t%v [-init <template>]\n", os.Args[0])
-	f("\t%v [-gglog <log_level>] [-licenseFile <filepath>] [-core]\n", os.Args[0])
 	l()
 
 	flag.PrintDefaults()
