@@ -335,7 +335,7 @@ func CreateElement[T any, P Props](instance T, newprops P, children ...Element) 
 			}
 		} else {
 			return createFunctionElement(
-				reflect.ValueOf(instance).Interface().(FunctionComponent[P]),
+				reflect.ValueOf(instance).Elem().Interface().(FunctionComponent[P]),
 				newprops,
 				children...,
 			)
