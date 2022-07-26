@@ -27,5 +27,5 @@ func main() {
 	flag.Usage = usage
 	flag.Parse()
 
-	doinit(*fInit.val)
+	doinit(*fInit.val, *fName.val)
 }

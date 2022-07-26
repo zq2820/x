@@ -8,6 +8,7 @@ import (
 
 var (
 	fInit initFlag
+	fName initFlag
 )
 
 type initFlag struct {
@@ -25,6 +26,7 @@ func (f *initFlag) Set(s string) error {
 
 func init() {
 	flag.Var(&fInit, "init", "create a GopherJS React application using the specified template (see below)")
+	flag.Var(&fName, "name", "new Project Name")
 }
 
 func usage() {
@@ -38,6 +40,7 @@ func usage() {
 
 	l("Usage:")
 	f("\t%v [-init <template>]\n", os.Args[0])
+	f("\t%v [-name <template>]\n", os.Args[1])
 	l()
 
 	flag.PrintDefaults()
