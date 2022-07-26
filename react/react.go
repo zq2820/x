@@ -299,7 +299,7 @@ func CreateElement[T any, P Props](instance T, newprops P, children ...Element) 
 			var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
 				hot := &HotComponent{ComponentDef: elem, module: string(field.Tag)}
 				hot.render = func(a *HotComponent) Element {
-					return CreateFunctionElement(
+					return createFunctionElement(
 						reflect.ValueOf(
 							reflect.ValueOf(
 								chunks.GoChunks[string(field.Tag)],
@@ -334,7 +334,7 @@ func CreateElement[T any, P Props](instance T, newprops P, children ...Element) 
 				Elem: react.Call(reactCreateElement, args...),
 			}
 		} else {
-			return CreateFunctionElement(
+			return createFunctionElement(
 				reflect.ValueOf(instance).Interface().(FunctionComponent[P]),
 				newprops,
 				children...,
@@ -477,7 +477,7 @@ func Render(el Element, container dom.Element) Element {
 	return &elementHolder{Elem: v}
 }
 
-func CreateFunctionElement[P Props](cmp FunctionComponent[P], props P, children ...Element) Element {
+func createFunctionElement[P Props](cmp FunctionComponent[P], props P, children ...Element) Element {
 	propsWrap := object.New()
 	if reflect.ValueOf(props).Interface() != nil {
 		propsWrap.Set(nestedProps, wrapValue(props))
@@ -524,8 +524,12 @@ type FunctionComponent[P Props] interface {
 	Default(props P, children ...Element) Element
 }
 
-func UnwrapValue(props *js.Object) interface{} {
-	return unwrapValue(props)
+func UnwrapValue(v *js.Object) interface{} {
+	return unwrapValue(v)
+}
+
+func WrapValue(v interface{}) *js.Object {
+	return wrapValue(v)
 }
 
 func makeFunc(fn func(this *js.Object, arguments []*js.Object) interface{}, name string) *js.Object {
