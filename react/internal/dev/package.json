@@ -10,7 +10,6 @@
   },
   "devDependencies": {
     "@webpack-cli/serve": "^1.7.0",
-    "antd": "^4.21.3",
     "create-react-class": "^15.7.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
