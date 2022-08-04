@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"strings"
 
@@ -28,6 +29,7 @@ func doinit(tmplName string, projectName string) {
 		URL:      "https://github.com/zq2820/helloworld.git",
 		Progress: os.Stdout,
 	})
+	exec.Command("bash", "-c", fmt.Sprintf("cd %s;rm -rf .git;git init", projectName))
 
 	replaceModule(output, projectName)
 	if err != nil {
@@ -38,7 +40,7 @@ func doinit(tmplName string, projectName string) {
 func replaceModule(dir, projectName string) {
 	if items, err := os.ReadDir(dir); err == nil {
 		for _, item := range items {
-			if item.IsDir() && item.Name() == "src" {
+			if item.IsDir() && item.Name() != ".git" {
 				replaceModule(path.Join(dir, item.Name()), projectName)
 			} else if strings.HasSuffix(item.Name(), ".go") || strings.HasSuffix(item.Name(), ".mod") {
 				file := path.Join(dir, item.Name())
