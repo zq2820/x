@@ -80,6 +80,15 @@ func Sprintf(format string, args ...interface{}) S {
 	return S(fmt.Sprintf(format, args...))
 }
 
+func Sprintln[T any](args []T) S {
+	_args := make([]interface{}, len(args), len(args))
+	for i, val := range args {
+		_args[i] = val
+	}
+
+	return S(fmt.Sprintln(_args...))
+}
+
 type elementHolder = core.ElementHolder
 
 type Element = core.Element
