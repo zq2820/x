@@ -14,7 +14,7 @@ func buildWrapper(cd react.ComponentDef) react.Component {
 
 func buildWrapperElem(children ...react.Element) *WrapperElem {
 	return &WrapperElem{
-		Element: react.CreateElement(buildWrapper, nil, children...),
+		Element: react.CreateElement[any, react.Props](buildWrapper, nil, children...),
 	}
 }
 

@@ -14,7 +14,7 @@ func buildOuter(cd react.ComponentDef) react.Component {
 
 func buildOuterElem(children ...react.Element) *OuterElem {
 	return &OuterElem{
-		Element: react.CreateElement(buildOuter, nil, children...),
+		Element: react.CreateElement[any, react.Props](buildOuter, nil, children...),
 	}
 }
 

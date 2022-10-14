@@ -26,6 +26,7 @@ require (
 	honnef.co/go/js/dom v0.0.0-20210725211120-f030747120f2
 	honnef.co/go/js/xhr v0.0.0-20150307031022-00e3346113ae
 	mvdan.cc/sh v2.6.0+incompatible
+	github.com/jinzhu/copier v0.3.5
 )
 
 require (
@@ -41,6 +42,7 @@ require (
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
+	github.com/speps/go-hashids v1.0.0 // indirect
 	github.com/src-d/gcfg v1.4.0 // indirect
 	github.com/xanzy/ssh-agent v0.3.1 // indirect
 	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect

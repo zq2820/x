@@ -1,7 +1,8 @@
 const webpack = require("webpack");
+const UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 
 module.exports = {
-	mode: 'production',
+	mode: 'development',
 	entry: "./entry.js",
 	output: {
 		path: __dirname,
@@ -9,6 +10,6 @@ module.exports = {
 		libraryTarget: "this",
 	},
 	optimization: {
-    minimize: true
+    minimize: false
   }
 };
