@@ -68,7 +68,7 @@ var object = js.Global.Get("Object")
 var symbolFragment = react.Get("Fragment")
 
 // ComponentDef is embedded in a type definition to indicate the type is a component
-type ComponentDef struct {
+type ComponentDef[P Props] struct {
 	elem *js.Object
 }
 
@@ -133,14 +133,14 @@ type State interface {
 	EqualsIntf(v State) bool
 }
 
-func (c ComponentDef) Props() Props {
+func (c *ComponentDef[P]) Props() P {
 	if c.elem.Get(reactCompProps).Get(nestedProps) == js.Undefined {
-		return nil
+		return reflect.ValueOf(nil).Interface().(P)
 	}
-	return unwrapValue(c.elem.Get(reactCompProps).Get(nestedProps)).(Props)
+	return unwrapValue(c.elem.Get(reactCompProps).Get(nestedProps)).(P)
 }
 
-func (c ComponentDef) Children() []Element {
+func (c *ComponentDef[P]) Children() []Element {
 	v := c.elem.Get(reactCompProps).Get(nestedChildren)
 
 	if v == js.Undefined {
@@ -150,7 +150,7 @@ func (c ComponentDef) Children() []Element {
 	return *(unwrapValue(v).(*[]Element))
 }
 
-func (c ComponentDef) SetState(i State) {
+func (c *ComponentDef[P]) SetState(i State) {
 	rs := c.elem.Get(reactCompState)
 	is := rs.Get(nestedState)
 
@@ -164,7 +164,7 @@ func (c ComponentDef) SetState(i State) {
 	c.elem.Call(reactCompForceUpdate)
 }
 
-func (c ComponentDef) State() State {
+func (c *ComponentDef[P]) State() State {
 	rs := c.elem.Get(reactCompState)
 	is := rs.Get(nestedState)
 
@@ -173,14 +173,14 @@ func (c ComponentDef) State() State {
 	return cur
 }
 
-func (c ComponentDef) ForceUpdate() {
+func (c *ComponentDef[P]) ForceUpdate() {
 	c.elem.Call(reactCompForceUpdate)
 }
 
-type ComponentBuilder func(elem ComponentDef) Component
+type ComponentBuilder[P Props] func(elem ComponentDef[P]) Component
 
 type HotComponent struct {
-	ComponentDef
+	ComponentDef[Props]
 	module string
 	render func(a *HotComponent) Element
 }
@@ -215,23 +215,22 @@ func (a *HotComponent) ComponentWillUnmount() {
 	}))
 }
 
-func createElementHot[P Props](component interface{}, newprops P, children ...Element) Element {
-	var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
-		reflect.ValueOf(component).Elem().FieldByName("ComponentDef").Set(reflect.ValueOf(elem))
-		return reflect.ValueOf(component).Interface().(Component)
+func buildClassComponent[P Props](buildCmp func(elem ComponentDef[P]) Component, pkg string, component interface{}, props P, children ...Element) Element {
+	cmp := buildCmp(ComponentDef[P]{})
+	var typ reflect.Type
+	if reflect.TypeOf(component).Kind() == reflect.Ptr {
+		typ = reflect.TypeOf(cmp).Elem()
 	}
-	cmp := buildCmp(ComponentDef{})
-	typ := reflect.TypeOf(cmp).Elem()
 	var comp *js.Object
-	comp = compMap[typ.PkgPath()]
+	comp = compMap[pkg]
 	if comp == nil {
 		comp = buildReactComponent(typ, buildCmp)
-		compMap[typ.PkgPath()] = comp
+		compMap[pkg] = comp
 	}
 
 	propsWrap := object.New()
-	if reflect.ValueOf(newprops).Interface() != nil {
-		propsWrap.Set(nestedProps, wrapValue(newprops))
+	if reflect.ValueOf(props).Interface() != nil {
+		propsWrap.Set(nestedProps, wrapValue(props))
 	}
 
 	if children != nil {
@@ -249,12 +248,22 @@ func createElementHot[P Props](component interface{}, newprops P, children ...El
 	}
 }
 
+func createElementHot[P Props](component interface{}, props P, children ...Element) Element {
+	var buildCmp ComponentBuilder[P] = func(elem ComponentDef[P]) Component {
+		reflect.ValueOf(component).Elem().FieldByName("ComponentDef").Set(reflect.ValueOf(elem))
+		return reflect.ValueOf(component).Interface().(Component)
+	}
+	return buildClassComponent(buildCmp, reflect.TypeOf(component).Elem().PkgPath(), component, props, children...)
+}
+
 func CreateElement[P Props](component interface{}, props P, children ...Element) Element {
-	if reflect.TypeOf(component).Kind() == reflect.Ptr {
+	componentType := reflect.TypeOf(component)
+	if componentType.Kind() == reflect.Ptr {
 		if _, ok := reflect.TypeOf(component).Elem().FieldByName("ComponentDef"); ok {
 			pkg := reflect.TypeOf(component).Elem().PkgPath()
 			originalPkg := pkg
-			var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
+			_ = originalPkg
+			var buildCmp ComponentBuilder[Props] = func(elem ComponentDef[Props]) Component {
 				if chunks.IsWatch {
 					hot := &HotComponent{ComponentDef: elem, module: originalPkg}
 					hot.render = func(a *HotComponent) Element {
@@ -266,51 +275,24 @@ func CreateElement[P Props](component interface{}, props P, children ...Element)
 				return reflect.ValueOf(component).Interface().(Component)
 			}
 
-			cmp := buildCmp(ComponentDef{})
-			var comp *js.Object
-
 			if chunks.IsWatch {
 				pkg += "$hot"
 			}
 
-			comp = compMap[pkg]
-			if comp == nil {
-				comp = buildReactComponent(reflect.TypeOf(cmp), buildCmp)
-				compMap[pkg] = comp
-			}
-
-			propsWrap := object.New()
-			if reflect.ValueOf(props).Interface() != nil {
-				propsWrap.Set(nestedProps, wrapValue(props))
-			}
-
-			if children != nil {
-				propsWrap.Set(nestedChildren, wrapValue(&children))
-			}
-
-			args := []interface{}{comp, propsWrap}
-
-			for _, v := range children {
-				args = append(args, v)
-			}
-
-			return &elementHolder{
-				Elem: react.Call(reactCreateElement, args...),
-			}
+			return buildClassComponent[Props](buildCmp, pkg, component, props, children...)
 		} else {
 			panic("element type error")
 		}
-	} else if componentType := reflect.TypeOf(component); componentType.Kind() == reflect.Func {
+	} else if componentType.Kind() == reflect.Func {
 		if componentType.NumOut() == 1 {
 			returnType := componentType.Out(0)
 			// if reutrn type is Element
 			if returnType.PkgPath() == "myitcv.io/react/internal/core" {
 				if returnType.Name() == "Element" {
 					if chunks.IsWatch {
-						var buildCmp ComponentBuilder = func(elem ComponentDef) Component {
+						var buildCmp ComponentBuilder[Props] = func(elem ComponentDef[Props]) Component {
 							hot := &HotComponent{ComponentDef: elem, module: componentType.PkgPath()}
 							hot.render = func(a *HotComponent) Element {
-
 								children := a.Children()
 								args := make([]interface{}, 0, len(children)+2)
 								args = append(args, chunks.GoChunks[componentType.PkgPath()])
@@ -324,27 +306,7 @@ func CreateElement[P Props](component interface{}, props P, children ...Element)
 							return reflect.ValueOf(hot).Interface().(Component)
 						}
 
-						cmp := buildCmp(ComponentDef{})
-						typ := reflect.TypeOf(cmp).Elem()
-						comp := buildReactComponent(typ, buildCmp)
-						propsWrap := object.New()
-						if reflect.ValueOf(props).Interface() != nil {
-							propsWrap.Set(nestedProps, wrapValue(props))
-						}
-
-						if children != nil {
-							propsWrap.Set(nestedChildren, wrapValue(&children))
-						}
-
-						args := []interface{}{comp, propsWrap}
-
-						for _, v := range children {
-							args = append(args, v)
-						}
-
-						return &elementHolder{
-							Elem: react.Call(reactCreateElement, args...),
-						}
+						return buildClassComponent[Props](buildCmp, componentType.PkgPath()+"$hot", component, props, children...)
 					}
 					return CreateFunctionElement(component, props, children...)
 				}
@@ -367,14 +329,18 @@ func createElement(cmp interface{}, props interface{}, children ...Element) Elem
 	}
 }
 
-func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object {
+func buildReactComponent[P Props](typ reflect.Type, builder ComponentBuilder[P]) *js.Object {
 	compDef := object.New()
-	compDef.Set(reactCompDisplayName, fmt.Sprintf("%v(%v)", typ.Name(), typ.PkgPath()))
+	if typ != nil {
+		compDef.Set(reactCompDisplayName, fmt.Sprintf("%v(%v)", typ.Name(), typ.PkgPath()))
+	} else {
+		compDef.Set(reactCompDisplayName, fmt.Sprintf("HotComponent(myitcv.io/react)"))
+	}
 	compDef.Set(reactComponentBuilder, builder)
 
 	compDef.Set(reactCompGetInitialState, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef{elem: elem})
+		cmp := builder(ComponentDef[P]{elem: elem})
 
 		var wv *js.Object
 
@@ -425,7 +391,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 
 	compDef.Set(reactCompComponentDidMount, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef{elem: elem})
+		cmp := builder(ComponentDef[P]{elem: elem})
 
 		if cmp, ok := cmp.(componentWithDidMount); ok {
 			cmp.ComponentDidMount()
@@ -436,7 +402,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 
 	compDef.Set(reactCompComponentWillReceiveProps, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef{elem: elem})
+		cmp := builder(ComponentDef[P]{elem: elem})
 
 		if cmp, ok := cmp.(componentWithWillReceiveProps); ok {
 			ourProps := unwrapValue(arguments[0].Get(nestedProps)).(Props)
@@ -448,7 +414,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 
 	compDef.Set(reactCompComponentWillUnmount, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef{elem: elem})
+		cmp := builder(ComponentDef[P]{elem: elem})
 
 		if cmp, ok := cmp.(componentWithWillUnmount); ok {
 			cmp.ComponentWillUnmount()
@@ -459,7 +425,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 
 	compDef.Set(reactCompComponentWillMount, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef{elem: elem})
+		cmp := builder(ComponentDef[P]{elem: elem})
 
 		// TODO we can make this more efficient by not doing the type check
 		// within the function body; it is known at the time of setting
@@ -473,7 +439,7 @@ func buildReactComponent(typ reflect.Type, builder ComponentBuilder) *js.Object 
 
 	compDef.Set(reactCompRender, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef{elem: elem})
+		cmp := builder(ComponentDef[P]{elem: elem})
 
 		renderRes := cmp.Render()
 
@@ -529,23 +495,15 @@ func UseEffect(cb func() func(), deps []*js.Object) {
 	react.Call(useEffect, cb, deps)
 }
 
-func UseRef(val ...interface{}) js.Object {
+func UseRef(val ...interface{}) *js.Object {
 	v := react.Call(useRef, val...)
 
-	return *v
+	return v
 }
 
 type FunctionComponent[P Props] interface {
 	HackRender(props *js.Object) Element
 	Default(props P, children ...Element) Element
-}
-
-func UnwrapValue(v *js.Object) interface{} {
-	return unwrapValue(v)
-}
-
-func WrapValue(v interface{}) *js.Object {
-	return wrapValue(v)
 }
 
 func makeFunc(fn func(this *js.Object, arguments []*js.Object) interface{}, name string) *js.Object {
