@@ -20,7 +20,6 @@ import (
 
 	"github.com/gopherjs/gopherjs/chunks"
 	"github.com/gopherjs/gopherjs/js"
-	"github.com/gopherjs/jsbuiltin"
 	"honnef.co/go/js/dom"
 
 	// imported for the side effect of bundling react
@@ -32,25 +31,29 @@ import (
 )
 
 const (
-	reactCompProps                     = "props"
-	reactCompLastState                 = "__lastState"
-	reactComponentBuilder              = "__componentBuilder"
-	reactCompDisplayName               = "displayName"
-	reactCompSetState                  = "setState"
-	reactCompForceUpdate               = "forceUpdate"
-	reactCompState                     = "state"
-	reactCompGetInitialState           = "getInitialState"
-	reactCompShouldComponentUpdate     = "shouldComponentUpdate"
-	reactCompComponentDidMount         = "componentDidMount"
-	reactCompComponentWillReceiveProps = "componentWillReceiveProps"
-	reactCompComponentWillMount        = "componentWillMount"
-	reactCompComponentWillUnmount      = "componentWillUnmount"
-	reactCompRender                    = "render"
+	reactCompProps                = "props"
+	reactCompLastState            = "__lastState"
+	reactComponentBuilder         = "__componentBuilder"
+	reactCompDisplayName          = "displayName"
+	reactCompSetState             = "setState"
+	reactCompForceUpdate          = "forceUpdate"
+	reactCompState                = "state"
+	reactCompGetInitialState      = "getInitialState"
+	reactCompComponentDidMount    = "componentDidMount"
+	reactGetSnapshotBeforeUpdate  = "getSnapshotBeforeUpdate"
+	reactComponentDidUpdate       = "componentDidUpdate"
+	reactCompComponentWillUnmount = "componentWillUnmount"
+	reactCompRender               = "render"
+	reactComponentDidCatch        = "componentDidCatch"
+	reactGetDerivedStateFromError = "getDerivedStateFromError"
+	reactGetDerivedStateFromProps = "getDerivedStateFromProps"
 
 	/** hooks */
-	useState  = "useState"
-	useEffect = "useEffect"
-	useRef    = "useRef"
+	useState    = "useState"
+	useEffect   = "useEffect"
+	useRef      = "useRef"
+	useCallback = "useCallback"
+	useMemo     = "useMemo"
 
 	reactCreateElement = "createElement"
 	reactCreateClass   = "createClass"
@@ -68,7 +71,7 @@ var object = js.Global.Get("Object")
 var symbolFragment = react.Get("Fragment")
 
 // ComponentDef is embedded in a type definition to indicate the type is a component
-type ComponentDef[P Props] struct {
+type ComponentDef[P Props, S State] struct {
 	elem *js.Object
 }
 
@@ -98,29 +101,41 @@ type Component interface {
 	Render() Element
 }
 
-type componentWithWillMount interface {
-	Component
-	ComponentWillMount()
-}
-
 type componentWithDidMount interface {
 	Component
 	ComponentDidMount()
 }
 
-type componentWithWillReceiveProps interface {
+type componentWithDidUpdate[P Props, S State] interface {
 	Component
-	ComponentWillReceivePropsIntf(i interface{})
+	ComponentDidUpdate(prevProps P, prevState S, snapshot *js.Object)
 }
 
-type componentWithGetInitialState interface {
+type getSnapshotBeforeUpdate[P Props, S State] interface {
 	Component
-	GetInitialStateIntf() State
+	GetSnapshotBeforeUpdate(prevProps P, prevState S) interface{}
+}
+
+type componentWithGetInitialState[S State] interface {
+	Component
+	GetInitialStateIntf() S
 }
 
 type componentWithWillUnmount interface {
 	Component
 	ComponentWillUnmount()
+}
+
+type componentDidCatch interface {
+	Component
+	ComponentDidCatch(info *js.Object, componentStack *js.Object)
+}
+
+type getDerivedStateFromError[S State] interface {
+	GetDerivedStateFromError(errpr *js.Object) S
+}
+type getDerivedStateFromProps[P Props, S State] interface {
+	GetDerivedStateFromProps(prevProps P, prevState S) S
 }
 
 type Props interface {
@@ -133,14 +148,14 @@ type State interface {
 	EqualsIntf(v State) bool
 }
 
-func (c *ComponentDef[P]) Props() P {
+func (c *ComponentDef[P, S]) Props() P {
 	if c.elem.Get(reactCompProps).Get(nestedProps) == js.Undefined {
 		return reflect.ValueOf(nil).Interface().(P)
 	}
 	return unwrapValue(c.elem.Get(reactCompProps).Get(nestedProps)).(P)
 }
 
-func (c *ComponentDef[P]) Children() []Element {
+func (c *ComponentDef[P, S]) Children() []Element {
 	v := c.elem.Get(reactCompProps).Get(nestedChildren)
 
 	if v == js.Undefined {
@@ -150,7 +165,7 @@ func (c *ComponentDef[P]) Children() []Element {
 	return *(unwrapValue(v).(*[]Element))
 }
 
-func (c *ComponentDef[P]) SetState(i State) {
+func (c *ComponentDef[P, S]) SetState(i State) {
 	rs := c.elem.Get(reactCompState)
 	is := rs.Get(nestedState)
 
@@ -164,23 +179,21 @@ func (c *ComponentDef[P]) SetState(i State) {
 	c.elem.Call(reactCompForceUpdate)
 }
 
-func (c *ComponentDef[P]) State() State {
+func (c *ComponentDef[P, S]) State() S {
 	rs := c.elem.Get(reactCompState)
 	is := rs.Get(nestedState)
 
-	cur := *(unwrapValue(is.Get(reactCompLastState)).(*State))
-
-	return cur
+	return *(unwrapValue(is.Get(reactCompLastState))).(*S)
 }
 
-func (c *ComponentDef[P]) ForceUpdate() {
+func (c *ComponentDef[P, S]) ForceUpdate() {
 	c.elem.Call(reactCompForceUpdate)
 }
 
-type ComponentBuilder[P Props] func(elem ComponentDef[P]) Component
+type ComponentBuilder[P Props, S State] func(elem ComponentDef[P, S]) Component
 
 type HotComponent struct {
-	ComponentDef[Props]
+	ComponentDef[Props, State]
 	module string
 	render func(a *HotComponent) Element
 }
@@ -215,8 +228,8 @@ func (a *HotComponent) ComponentWillUnmount() {
 	}))
 }
 
-func buildClassComponent[P Props](buildCmp func(elem ComponentDef[P]) Component, pkg string, component interface{}, props P, children ...Element) Element {
-	cmp := buildCmp(ComponentDef[P]{})
+func buildClassComponent[P Props, S State](buildCmp func(elem ComponentDef[P, S]) Component, pkg string, component interface{}, props P, children ...Element) Element {
+	cmp := buildCmp(ComponentDef[P, S]{})
 	var typ reflect.Type
 	if reflect.TypeOf(component).Kind() == reflect.Ptr {
 		typ = reflect.TypeOf(cmp).Elem()
@@ -248,8 +261,8 @@ func buildClassComponent[P Props](buildCmp func(elem ComponentDef[P]) Component,
 	}
 }
 
-func createElementHot[P Props](component interface{}, props P, children ...Element) Element {
-	var buildCmp ComponentBuilder[P] = func(elem ComponentDef[P]) Component {
+func createElementHot[P Props, S State](component interface{}, props P, children ...Element) Element {
+	var buildCmp ComponentBuilder[P, S] = func(elem ComponentDef[P, S]) Component {
 		reflect.ValueOf(component).Elem().FieldByName("ComponentDef").Set(reflect.ValueOf(elem))
 		return reflect.ValueOf(component).Interface().(Component)
 	}
@@ -263,11 +276,11 @@ func CreateElement[P Props](component interface{}, props P, children ...Element)
 			pkg := reflect.TypeOf(component).Elem().PkgPath()
 			originalPkg := pkg
 			_ = originalPkg
-			var buildCmp ComponentBuilder[Props] = func(elem ComponentDef[Props]) Component {
+			var buildCmp ComponentBuilder[Props, State] = func(elem ComponentDef[Props, State]) Component {
 				if chunks.IsWatch {
 					hot := &HotComponent{ComponentDef: elem, module: originalPkg}
 					hot.render = func(a *HotComponent) Element {
-						return createElementHot(chunks.GoChunks[originalPkg], a.Props(), a.Children()...)
+						return createElementHot[Props, State](chunks.GoChunks[originalPkg], a.Props(), a.Children()...)
 					}
 					return reflect.ValueOf(hot).Interface().(Component)
 				}
@@ -290,7 +303,7 @@ func CreateElement[P Props](component interface{}, props P, children ...Element)
 			if returnType.PkgPath() == "myitcv.io/react/internal/core" {
 				if returnType.Name() == "Element" {
 					if chunks.IsWatch {
-						var buildCmp ComponentBuilder[Props] = func(elem ComponentDef[Props]) Component {
+						var buildCmp ComponentBuilder[Props, State] = func(elem ComponentDef[Props, State]) Component {
 							hot := &HotComponent{ComponentDef: elem, module: componentType.PkgPath()}
 							hot.render = func(a *HotComponent) Element {
 								children := a.Children()
@@ -329,8 +342,9 @@ func createElement(cmp interface{}, props interface{}, children ...Element) Elem
 	}
 }
 
-func buildReactComponent[P Props](typ reflect.Type, builder ComponentBuilder[P]) *js.Object {
+func buildReactComponent[P Props, S State](typ reflect.Type, builder ComponentBuilder[P, S]) *js.Object {
 	compDef := object.New()
+	compDef.Set("statics", object.New())
 	if typ != nil {
 		compDef.Set(reactCompDisplayName, fmt.Sprintf("%v(%v)", typ.Name(), typ.PkgPath()))
 	} else {
@@ -340,14 +354,14 @@ func buildReactComponent[P Props](typ reflect.Type, builder ComponentBuilder[P])
 
 	compDef.Set(reactCompGetInitialState, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef[P]{elem: elem})
+		cmp := builder(ComponentDef[P, S]{elem: elem})
 
 		var wv *js.Object
 
 		res := object.New()
 		is := object.New()
 
-		if cmp, ok := cmp.(componentWithGetInitialState); ok {
+		if cmp, ok := cmp.(componentWithGetInitialState[S]); ok {
 			x := cmp.GetInitialStateIntf()
 			wv = wrapValue(&x)
 		}
@@ -358,40 +372,9 @@ func buildReactComponent[P Props](typ reflect.Type, builder ComponentBuilder[P])
 		return res
 	}))
 
-	compDef.Set(reactCompShouldComponentUpdate, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
-		var nextProps Props
-		var curProps Props
-
-		// whether a component should update is only a function of its props
-		// ... and a component does not need to have props
-		//
-		// the only way we have of determining that here is whether the this
-		// object has a props property that has a non-nil nestedProps property
-
-		if this != nil {
-			if p := this.Get(reactCompProps); p != nil {
-				if ok, err := jsbuiltin.In(nestedProps, p); err == nil && ok {
-					if v := (p.Get(nestedProps)); v != nil {
-						curProps = unwrapValue(v).(Props)
-					}
-				} else {
-					return false
-				}
-			}
-		}
-
-		if arguments[0] != nil {
-			if ok, err := jsbuiltin.In(nestedProps, arguments[0]); err == nil && ok {
-				nextProps = unwrapValue(arguments[0].Get(nestedProps)).(Props)
-			}
-		}
-
-		return !curProps.EqualsIntf(nextProps)
-	}))
-
 	compDef.Set(reactCompComponentDidMount, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef[P]{elem: elem})
+		cmp := builder(ComponentDef[P, S]{elem: elem})
 
 		if cmp, ok := cmp.(componentWithDidMount); ok {
 			cmp.ComponentDidMount()
@@ -400,13 +383,27 @@ func buildReactComponent[P Props](typ reflect.Type, builder ComponentBuilder[P])
 		return nil
 	}))
 
-	compDef.Set(reactCompComponentWillReceiveProps, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+	compDef.Set(reactComponentDidUpdate, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef[P]{elem: elem})
+		cmp := builder(ComponentDef[P, S]{elem: elem})
 
-		if cmp, ok := cmp.(componentWithWillReceiveProps); ok {
-			ourProps := unwrapValue(arguments[0].Get(nestedProps)).(Props)
-			cmp.ComponentWillReceivePropsIntf(ourProps)
+		if cmp, ok := cmp.(componentWithDidUpdate[P, S]); ok {
+			prevProps := unwrapValue(arguments[0].Get(nestedProps)).(P)
+			prevState := *unwrapValue(arguments[1].Get(nestedState).Get(reactCompLastState)).(*S)
+			cmp.ComponentDidUpdate(prevProps, prevState, arguments[2])
+		}
+
+		return nil
+	}))
+
+	compDef.Set(reactGetSnapshotBeforeUpdate, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+		elem := this
+		cmp := builder(ComponentDef[P, S]{elem: elem})
+
+		if cmp, ok := cmp.(getSnapshotBeforeUpdate[P, S]); ok {
+			prevProps := unwrapValue(arguments[0].Get(nestedProps)).(P)
+			prevState := *unwrapValue(arguments[1].Get(nestedState).Get(reactCompLastState)).(*S)
+			return wrapValue(cmp.GetSnapshotBeforeUpdate(prevProps, prevState))
 		}
 
 		return nil
@@ -414,7 +411,7 @@ func buildReactComponent[P Props](typ reflect.Type, builder ComponentBuilder[P])
 
 	compDef.Set(reactCompComponentWillUnmount, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef[P]{elem: elem})
+		cmp := builder(ComponentDef[P, S]{elem: elem})
 
 		if cmp, ok := cmp.(componentWithWillUnmount); ok {
 			cmp.ComponentWillUnmount()
@@ -423,15 +420,51 @@ func buildReactComponent[P Props](typ reflect.Type, builder ComponentBuilder[P])
 		return nil
 	}))
 
-	compDef.Set(reactCompComponentWillMount, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+	compDef.Set(reactComponentDidCatch, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef[P]{elem: elem})
+		cmp := builder(ComponentDef[P, S]{elem: elem})
 
-		// TODO we can make this more efficient by not doing the type check
-		// within the function body; it is known at the time of setting
-		// "componentWillMount" on the compDef
-		if cmp, ok := cmp.(componentWithWillMount); ok {
-			cmp.ComponentWillMount()
+		if cmp, ok := cmp.(componentDidCatch); ok {
+			cmp.ComponentDidCatch(arguments[0], arguments[1])
+		}
+
+		return nil
+	}))
+
+	compDef.Get("statics").Set(reactGetDerivedStateFromError, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+		elem := this
+		cmp := builder(ComponentDef[P, S]{elem: elem})
+		var wv *js.Object
+
+		res := object.New()
+		is := object.New()
+
+		if cmp, ok := cmp.(getDerivedStateFromError[S]); ok {
+			x := cmp.GetDerivedStateFromError(arguments[0])
+			wv = wrapValue(&x)
+		}
+
+		res.Set(nestedState, is)
+		is.Set(reactCompLastState, wv)
+
+		return res
+	}))
+
+	compDef.Get("statics").Set(reactGetDerivedStateFromProps, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+		elem := this
+		cmp := builder(ComponentDef[P, S]{elem: elem})
+
+		if cmp, ok := cmp.(getDerivedStateFromProps[P, S]); ok {
+			var prevProps = unwrapValue(arguments[0].Get(nestedProps)).(P)
+			var prevState = *unwrapValue(arguments[1].Get(nestedState).Get(reactCompLastState)).(*S)
+
+			res := object.New()
+			is := object.New()
+			x := cmp.GetDerivedStateFromProps(prevProps, prevState)
+			res.Set(nestedState, is)
+			is.Set(reactCompLastState, wrapValue(&x))
+
+			return res
 		}
 
 		return nil
@@ -439,7 +472,7 @@ func buildReactComponent[P Props](typ reflect.Type, builder ComponentBuilder[P])
 
 	compDef.Set(reactCompRender, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
-		cmp := builder(ComponentDef[P]{elem: elem})
+		cmp := builder(ComponentDef[P, S]{elem: elem})
 
 		renderRes := cmp.Render()
 
@@ -485,14 +518,33 @@ func CreateFunctionElement[P Props](cmp interface{}, props P, children ...Elemen
 	}
 }
 
-func UseState(val ...interface{}) (*js.Object, *js.Object) {
-	v := react.Call(useState, val...)
+func UseState[T any](vals ...T) (T, func(T)) {
+	args := make([]interface{}, 0, len(vals))
+	for _, val := range vals {
+		args = append(args, wrapValue(val))
+	}
 
-	return v.Index(0), v.Index(1)
+	v := react.Call(useState, args...)
+
+	return unwrapValue(v.Index(0)).(T), func(val T) {
+		v.Index(1).Invoke(wrapValue(val))
+	}
 }
 
-func UseEffect(cb func() func(), deps []*js.Object) {
+func UseEffect(cb func() func(), deps []interface{}) {
 	react.Call(useEffect, cb, deps)
+}
+
+func UseCallback[T any](cb T, deps []interface{}) T {
+	return unwrapValue(react.Call(useCallback, wrapValue(cb), deps)).(T)
+}
+
+func UseMemo[T any](cb func() T, deps []interface{}) T {
+	f := js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+		return wrapValue(cb())
+	})
+
+	return unwrapValue(react.Call(useMemo, f, deps)).(T)
 }
 
 func UseRef(val ...interface{}) *js.Object {
