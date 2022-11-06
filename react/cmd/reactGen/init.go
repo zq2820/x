@@ -29,9 +29,17 @@ func doinit(tmplName string, projectName string) {
 		URL:      "https://github.com/zq2820/helloworld.git",
 		Progress: os.Stdout,
 	})
-	exec.Command("bash", "-c", fmt.Sprintf("cd %s;rm -rf .git;git init", projectName))
+	if err != nil {
+		panic(err)
+	}
+
+	err = exec.Command("bash", "-c", fmt.Sprintf("cd %s;rm -rf .git", projectName)).Run()
+	if err != nil {
+		panic(err)
+	}
 
 	replaceModule(output, projectName)
+	err = exec.Command("bash", "-c", fmt.Sprintf("cd %s;git init", projectName)).Run()
 	if err != nil {
 		panic(err)
 	}
