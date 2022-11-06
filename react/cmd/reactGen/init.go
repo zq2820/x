@@ -42,7 +42,7 @@ func replaceModule(dir, projectName string) {
 		for _, item := range items {
 			if item.IsDir() && item.Name() != ".git" {
 				replaceModule(path.Join(dir, item.Name()), projectName)
-			} else if strings.HasSuffix(item.Name(), ".go") || strings.HasSuffix(item.Name(), ".mod") {
+			} else if strings.HasSuffix(item.Name(), ".go") || strings.HasSuffix(item.Name(), ".gox") || strings.HasSuffix(item.Name(), ".mod") {
 				file := path.Join(dir, item.Name())
 				if buffer, err := os.ReadFile(file); err == nil {
 					content := string(buffer)
