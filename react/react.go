@@ -484,6 +484,7 @@ func buildReactComponent[P Props, S State](typ reflect.Type, builder ComponentBu
 
 func Render(el Element, container dom.Element) Element {
 	v := reactDOM.Call(reactDOMRender, el, container)
+	compMap = make(map[string]*js.Object)
 
 	return &elementHolder{Elem: v}
 }
