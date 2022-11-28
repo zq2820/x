@@ -41,6 +41,7 @@ const (
 	reactCompGetInitialState      = "getInitialState"
 	reactCompComponentDidMount    = "componentDidMount"
 	reactGetSnapshotBeforeUpdate  = "getSnapshotBeforeUpdate"
+	reactShouldComponentUpdate    = "shouldComponentUpdate"
 	reactComponentDidUpdate       = "componentDidUpdate"
 	reactCompComponentWillUnmount = "componentWillUnmount"
 	reactCompRender               = "render"
@@ -129,6 +130,11 @@ type componentWithWillUnmount interface {
 type componentDidCatch interface {
 	Component
 	ComponentDidCatch(info *js.Object, componentStack *js.Object)
+}
+
+type shouldComponentUpdate[P Props, S State] interface {
+	Component
+	ShouldComponentUpdate(prevProps P, prevState S) bool
 }
 
 type getDerivedStateFromError[S State] interface {
@@ -396,6 +402,19 @@ func buildReactComponent[P Props, S State](typ reflect.Type, builder ComponentBu
 		return nil
 	}))
 
+	compDef.Set(reactShouldComponentUpdate, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+		elem := this
+		cmp := builder(ComponentDef[P, S]{elem: elem})
+
+		if cmp, ok := cmp.(shouldComponentUpdate[P, S]); ok {
+			prevProps := unwrapValue(arguments[0].Get(nestedProps)).(P)
+			prevState := *unwrapValue(arguments[1].Get(nestedState).Get(reactCompLastState)).(*S)
+			return wrapValue(cmp.ShouldComponentUpdate(prevProps, prevState))
+		}
+
+		return nil
+	}))
+
 	compDef.Set(reactGetSnapshotBeforeUpdate, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
 		cmp := builder(ComponentDef[P, S]{elem: elem})
@@ -431,30 +450,22 @@ func buildReactComponent[P Props, S State](typ reflect.Type, builder ComponentBu
 		return nil
 	}))
 
-	compDef.Get("statics").Set(reactGetDerivedStateFromError, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
-		elem := this
-		cmp := builder(ComponentDef[P, S]{elem: elem})
-		var wv *js.Object
-
-		res := object.New()
-		is := object.New()
-
-		if cmp, ok := cmp.(getDerivedStateFromError[S]); ok {
+	instance := builder(ComponentDef[P, S]{elem: nil})
+	if cmp, ok := instance.(getDerivedStateFromError[S]); ok {
+		compDef.Get("statics").Set(reactGetDerivedStateFromError, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
+			var wv *js.Object
+			res := object.New()
+			is := object.New()
 			x := cmp.GetDerivedStateFromError(arguments[0])
 			wv = wrapValue(&x)
-		}
+			res.Set(nestedState, is)
+			is.Set(reactCompLastState, wv)
 
-		res.Set(nestedState, is)
-		is.Set(reactCompLastState, wv)
-
-		return res
-	}))
-
-	compDef.Get("statics").Set(reactGetDerivedStateFromProps, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
-		elem := this
-		cmp := builder(ComponentDef[P, S]{elem: elem})
-
-		if cmp, ok := cmp.(getDerivedStateFromProps[P, S]); ok {
+			return res
+		}))
+	}
+	if cmp, ok := instance.(getDerivedStateFromProps[P, S]); ok {
+		compDef.Get("statics").Set(reactGetDerivedStateFromProps, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 			var prevProps = unwrapValue(arguments[0].Get(nestedProps)).(P)
 			var prevState = *unwrapValue(arguments[1].Get(nestedState).Get(reactCompLastState)).(*S)
 
@@ -465,10 +476,8 @@ func buildReactComponent[P Props, S State](typ reflect.Type, builder ComponentBu
 			is.Set(reactCompLastState, wrapValue(&x))
 
 			return res
-		}
-
-		return nil
-	}))
+		}))
+	}
 
 	compDef.Set(reactCompRender, js.MakeFunc(func(this *js.Object, arguments []*js.Object) interface{} {
 		elem := this
