@@ -76,7 +76,11 @@ type ComponentDef[P Props, S State] struct {
 	elem *js.Object
 }
 
-var compMap = make(map[string]*js.Object)
+// var compMap map[string]*js.Object
+
+// func init() {
+// 	compMap = make(map[string]*js.Object)
+// }
 
 // S is the React representation of a string
 type S = core.S
@@ -218,9 +222,10 @@ func (a *HotComponent) ComponentDidMount() {
 }
 
 func (a *HotComponent) ForceUpdate() {
-	if a.module != "" {
-		delete(compMap, a.module)
-	}
+	// if a.module != "" {
+	// 	js.Debugger()
+	// 	delete(compMap, a.module)
+	// }
 	a.ComponentDef.ForceUpdate()
 }
 
@@ -241,11 +246,11 @@ func buildClassComponent[P Props, S State](buildCmp func(elem ComponentDef[P, S]
 		typ = reflect.TypeOf(cmp).Elem()
 	}
 	var comp *js.Object
-	comp = compMap[pkg]
-	if comp == nil {
-		comp = buildReactComponent(typ, buildCmp)
-		compMap[pkg] = comp
-	}
+	// comp = compMap[pkg]
+	// if comp == nil {
+	comp = buildReactComponent(typ, buildCmp)
+	// compMap[pkg] = comp
+	// }
 
 	propsWrap := object.New()
 	if reflect.ValueOf(props).Interface() != nil {
@@ -493,7 +498,7 @@ func buildReactComponent[P Props, S State](typ reflect.Type, builder ComponentBu
 
 func Render(el Element, container dom.Element) Element {
 	v := reactDOM.Call(reactDOMRender, el, container)
-	compMap = make(map[string]*js.Object)
+	// compMap = make(map[string]*js.Object)
 
 	return &elementHolder{Elem: v}
 }
