@@ -18,6 +18,8 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/gopherjs/gopherjs/es"
+
 	"github.com/gopherjs/gopherjs/chunks"
 	"github.com/gopherjs/gopherjs/js"
 	"honnef.co/go/js/dom"
@@ -66,10 +68,39 @@ const (
 	nestedComponentWrapper = "__ComponentWrapper"
 )
 
-var react = js.Global.Get("React")
-var reactDOM = js.Global.Get("ReactDOM")
+var jsFragment = es.ImportNodeModule("react", "Fragment", es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+
+var jsCreateElement = es.ImportNodeModule("react", reactCreateElement, es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+
+var jsCreateClass = es.ImportNodeModule("react", reactCreateClass, es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+
+var jsUseState = es.ImportNodeModule("react", useState, es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+var jsUseEffect = es.ImportNodeModule("react", useEffect, es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+var jsUseRef = es.ImportNodeModule("react", useRef, es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+var jsUseCallback = es.ImportNodeModule("react", useCallback, es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+var jsUseMemo = es.ImportNodeModule("react", useMemo, es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+
+var jsDOMRender = es.ImportNodeModule("react-dom", reactDOMRender, es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+
 var object = js.Global.Get("Object")
-var symbolFragment = react.Get("Fragment")
 
 // ComponentDef is embedded in a type definition to indicate the type is a component
 type ComponentDef[P Props, S State] struct {
@@ -268,7 +299,7 @@ func buildClassComponent[P Props, S State](buildCmp func(elem ComponentDef[P, S]
 	}
 
 	return &elementHolder{
-		Elem: react.Call(reactCreateElement, args...),
+		Elem: jsCreateElement.Invoke(args...),
 	}
 }
 
@@ -324,7 +355,7 @@ func CreateElement[P Props](component interface{}, props P, children ...Element)
 								args = append(args, children)
 
 								return &elementHolder{
-									Elem: react.Call(reactCreateElement, args...),
+									Elem: jsCreateElement.Invoke(args...),
 								}
 							}
 							return reflect.ValueOf(hot).Interface().(Component)
@@ -349,7 +380,7 @@ func createElement(cmp interface{}, props interface{}, children ...Element) Elem
 	}
 
 	return &elementHolder{
-		Elem: react.Call(reactCreateElement, args...),
+		Elem: jsCreateElement.Invoke(args...),
 	}
 }
 
@@ -493,11 +524,11 @@ func buildReactComponent[P Props, S State](typ reflect.Type, builder ComponentBu
 		return renderRes
 	}))
 
-	return react.Call(reactCreateClass, compDef)
+	return jsCreateClass.Invoke(compDef)
 }
 
 func Render(el Element, container dom.Element) Element {
-	v := reactDOM.Call(reactDOMRender, el, container)
+	v := jsDOMRender.Invoke(el, container)
 	// compMap = make(map[string]*js.Object)
 
 	return &elementHolder{Elem: v}
@@ -529,7 +560,7 @@ func CreateFunctionElement[P Props](cmp interface{}, props P, children ...Elemen
 	}
 
 	return &elementHolder{
-		Elem: react.Call(reactCreateElement, args...),
+		Elem: jsCreateElement.Invoke(args...),
 	}
 }
 
@@ -539,7 +570,7 @@ func UseState[T any](vals ...T) (T, func(T)) {
 		args = append(args, wrapValue(val))
 	}
 
-	v := react.Call(useState, args...)
+	v := jsUseState.Invoke(args...)
 
 	return unwrapValue(v.Index(0)).(T), func(val T) {
 		v.Index(1).Invoke(wrapValue(val))
@@ -547,11 +578,11 @@ func UseState[T any](vals ...T) (T, func(T)) {
 }
 
 func UseEffect(cb func() func(), deps []interface{}) {
-	react.Call(useEffect, cb, deps)
+	jsUseEffect.Invoke(cb, deps)
 }
 
 func UseCallback[T any](cb T, deps []interface{}) T {
-	return unwrapValue(react.Call(useCallback, wrapValue(cb), deps)).(T)
+	return unwrapValue(jsUseCallback.Invoke(wrapValue(cb), deps)).(T)
 }
 
 func UseMemo[T any](cb func() T, deps []interface{}) T {
@@ -559,11 +590,11 @@ func UseMemo[T any](cb func() T, deps []interface{}) T {
 		return wrapValue(cb())
 	})
 
-	return unwrapValue(react.Call(useMemo, f, deps)).(T)
+	return unwrapValue(jsUseMemo.Invoke(f, deps)).(T)
 }
 
 func UseRef(val ...interface{}) *js.Object {
-	v := react.Call(useRef, val...)
+	v := jsUseRef.Invoke(val...)
 
 	return v
 }

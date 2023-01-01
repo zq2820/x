@@ -3,12 +3,11 @@ module myitcv.io
 go 1.18
 
 require (
-	cuelang.org/go v0.0.11
 	github.com/Quasilyte/inltest v0.7.0
+	github.com/go-git/go-git/v5 v5.4.2
 	github.com/golang/protobuf v1.2.0
 	github.com/google/go-github/v21 v21.0.0
 	github.com/gopherjs/gopherjs v1.17.2
-	github.com/gopherjs/jsbuiltin v0.0.0-20180426082241-50091555e127
 	github.com/jteeuwen/go-bindata v3.0.7+incompatible
 	github.com/kisielk/gotool v1.0.0
 	github.com/kr/fs v0.1.0
@@ -22,11 +21,8 @@ require (
 	golang.org/x/tools v0.1.11
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c
 	gopkg.in/fsnotify/fsnotify.v1 v1.4.7
-	honnef.co/go/js/console v0.0.0-20150119023344-105276c43558
 	honnef.co/go/js/dom v0.0.0-20210725211120-f030747120f2
-	honnef.co/go/js/xhr v0.0.0-20150307031022-00e3346113ae
 	mvdan.cc/sh v2.6.0+incompatible
-	github.com/jinzhu/copier v0.3.5
 )
 
 require (
@@ -36,35 +32,28 @@ require (
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect
-	github.com/go-git/go-git/v5 v5.4.2 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/speps/go-hashids v1.0.0 // indirect
-	github.com/src-d/gcfg v1.4.0 // indirect
 	github.com/xanzy/ssh-agent v0.3.1 // indirect
-	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
 
 require (
-	github.com/cockroachdb/apd/v2 v2.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
-	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/mpvl/unique v0.0.0-20150818121801-cbe035fff7de // indirect
 	github.com/neelance/astrewrite v0.0.0-20160511093645-99348263ae86 // indirect
 	github.com/neelance/sourcemap v0.0.0-20200213170602-2833bce08e4c // indirect
 	github.com/onsi/ginkgo v1.7.0 // indirect
 	github.com/onsi/gomega v1.4.3 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/speps/go-hashids/v2 v2.0.1 // indirect
@@ -74,20 +63,15 @@ require (
 	github.com/tdewolff/parse/v2 v2.6.0 // indirect
 	github.com/vanng822/css v1.0.1 // indirect
 	github.com/wellington/go-libsass v0.9.2 // indirect
-	github.com/yuin/goldmark v1.4.1 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
 	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	golang.org/x/xerrors v0.0.0-20190717185122-a985d3407aa7 // indirect
 	google.golang.org/appengine v1.1.0 // indirect
 	gopkg.in/errgo.v2 v2.1.0 // indirect
-	gopkg.in/src-d/go-git.v4 v4.13.1
-	gopkg.in/yaml.v2 v2.4.0 // indirect
-	honnef.co/go/js/util v0.0.0-20150216223935-96b8dd9d1621 // indirect
 	mvdan.cc/sh/v3 v3.0.0-alpha1 // indirect
 )
 
-replace github.com/gopherjs/gopherjs v1.17.2 => github.com/zq2820/gopherjs v0.0.0-20220725102315-bdd1f0235514
+replace github.com/gopherjs/gopherjs v1.17.2 => github.com/zq2820/gopherjs v0.0.0-20221128103609-c564e1686a09
