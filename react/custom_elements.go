@@ -37,6 +37,6 @@ type FragmentElem struct {
 // provided children
 func Fragment(children ...Element) *FragmentElem {
 	return &FragmentElem{
-		Element: createElement(symbolFragment, nil, children...),
+		Element: createElement(jsFragment, nil, children...),
 	}
 }

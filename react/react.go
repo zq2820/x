@@ -51,17 +51,6 @@ const (
 	reactGetDerivedStateFromError = "getDerivedStateFromError"
 	reactGetDerivedStateFromProps = "getDerivedStateFromProps"
 
-	/** hooks */
-	useState    = "useState"
-	useEffect   = "useEffect"
-	useRef      = "useRef"
-	useCallback = "useCallback"
-	useMemo     = "useMemo"
-
-	reactCreateElement = "createElement"
-	reactCreateClass   = "createClass"
-	reactDOMRender     = "render"
-
 	nestedChildren         = "_children"
 	nestedProps            = "_props"
 	nestedState            = "_state"
@@ -72,31 +61,31 @@ var jsFragment = es.ImportNodeModule("react", "Fragment", es.ImportOptions{
 	Method: es.NOT_DEFAULT,
 })
 
-var jsCreateElement = es.ImportNodeModule("react", reactCreateElement, es.ImportOptions{
+var jsCreateElement = es.ImportNodeModule("react", "createElement", es.ImportOptions{
 	Method: es.NOT_DEFAULT,
 })
 
-var jsCreateClass = es.ImportNodeModule("react", reactCreateClass, es.ImportOptions{
+var jsCreateClass = es.ImportNodeModule("create-react-class", "createClass", es.ImportOptions{
+	Method: es.DEFAULT,
+})
+
+var jsUseState = es.ImportNodeModule("react", "useState", es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+var jsUseEffect = es.ImportNodeModule("react", "useEffect", es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+var jsUseRef = es.ImportNodeModule("react", "useRef", es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+var jsUseCallback = es.ImportNodeModule("react", "useCallback", es.ImportOptions{
+	Method: es.NOT_DEFAULT,
+})
+var jsUseMemo = es.ImportNodeModule("react", "useMemo", es.ImportOptions{
 	Method: es.NOT_DEFAULT,
 })
 
-var jsUseState = es.ImportNodeModule("react", useState, es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-var jsUseEffect = es.ImportNodeModule("react", useEffect, es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-var jsUseRef = es.ImportNodeModule("react", useRef, es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-var jsUseCallback = es.ImportNodeModule("react", useCallback, es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-var jsUseMemo = es.ImportNodeModule("react", useMemo, es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-
-var jsDOMRender = es.ImportNodeModule("react-dom", reactDOMRender, es.ImportOptions{
+var jsDOMRender = es.ImportNodeModule("react-dom", "render", es.ImportOptions{
 	Method: es.NOT_DEFAULT,
 })
 
