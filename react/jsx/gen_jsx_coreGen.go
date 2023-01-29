@@ -223,7 +223,6 @@ func parseA(n *html.Node) *react.AElem {
 	}
 
 	return react.A(vp, kids...)
-
 }
 func parseAbbr(n *html.Node) *react.AbbrElem {
 
@@ -280,7 +279,6 @@ func parseAbbr(n *html.Node) *react.AbbrElem {
 	}
 
 	return react.Abbr(vp, kids...)
-
 }
 func parseArticle(n *html.Node) *react.ArticleElem {
 
@@ -337,7 +335,6 @@ func parseArticle(n *html.Node) *react.ArticleElem {
 	}
 
 	return react.Article(vp, kids...)
-
 }
 func parseAside(n *html.Node) *react.AsideElem {
 
@@ -394,7 +391,6 @@ func parseAside(n *html.Node) *react.AsideElem {
 	}
 
 	return react.Aside(vp, kids...)
-
 }
 func parseB(n *html.Node) *react.BElem {
 
@@ -451,7 +447,6 @@ func parseB(n *html.Node) *react.BElem {
 	}
 
 	return react.B(vp, kids...)
-
 }
 func parseBr(n *html.Node) *react.BrElem {
 
@@ -508,7 +503,6 @@ func parseBr(n *html.Node) *react.BrElem {
 	}
 
 	return react.Br(vp, kids...)
-
 }
 func parseButton(n *html.Node) *react.ButtonElem {
 
@@ -571,7 +565,6 @@ func parseButton(n *html.Node) *react.ButtonElem {
 	}
 
 	return react.Button(vp, kids...)
-
 }
 func parseCaption(n *html.Node) *react.CaptionElem {
 
@@ -628,7 +621,6 @@ func parseCaption(n *html.Node) *react.CaptionElem {
 	}
 
 	return react.Caption(vp, kids...)
-
 }
 func parseCode(n *html.Node) *react.CodeElem {
 
@@ -685,7 +677,6 @@ func parseCode(n *html.Node) *react.CodeElem {
 	}
 
 	return react.Code(vp, kids...)
-
 }
 func parseDiv(n *html.Node) *react.DivElem {
 
@@ -742,7 +733,6 @@ func parseDiv(n *html.Node) *react.DivElem {
 	}
 
 	return react.Div(vp, kids...)
-
 }
 func parseEm(n *html.Node) *react.EmElem {
 
@@ -799,7 +789,6 @@ func parseEm(n *html.Node) *react.EmElem {
 	}
 
 	return react.Em(vp, kids...)
-
 }
 func parseFooter(n *html.Node) *react.FooterElem {
 
@@ -856,7 +845,6 @@ func parseFooter(n *html.Node) *react.FooterElem {
 	}
 
 	return react.Footer(vp, kids...)
-
 }
 func parseForm(n *html.Node) *react.FormElem {
 
@@ -913,7 +901,6 @@ func parseForm(n *html.Node) *react.FormElem {
 	}
 
 	return react.Form(vp, kids...)
-
 }
 func parseH1(n *html.Node) *react.H1Elem {
 
@@ -970,7 +957,6 @@ func parseH1(n *html.Node) *react.H1Elem {
 	}
 
 	return react.H1(vp, kids...)
-
 }
 func parseH2(n *html.Node) *react.H2Elem {
 
@@ -1027,7 +1013,6 @@ func parseH2(n *html.Node) *react.H2Elem {
 	}
 
 	return react.H2(vp, kids...)
-
 }
 func parseH3(n *html.Node) *react.H3Elem {
 
@@ -1084,7 +1069,6 @@ func parseH3(n *html.Node) *react.H3Elem {
 	}
 
 	return react.H3(vp, kids...)
-
 }
 func parseH4(n *html.Node) *react.H4Elem {
 
@@ -1141,7 +1125,6 @@ func parseH4(n *html.Node) *react.H4Elem {
 	}
 
 	return react.H4(vp, kids...)
-
 }
 func parseH5(n *html.Node) *react.H5Elem {
 
@@ -1198,7 +1181,6 @@ func parseH5(n *html.Node) *react.H5Elem {
 	}
 
 	return react.H5(vp, kids...)
-
 }
 func parseH6(n *html.Node) *react.H6Elem {
 
@@ -1255,7 +1237,6 @@ func parseH6(n *html.Node) *react.H6Elem {
 	}
 
 	return react.H6(vp, kids...)
-
 }
 func parseHeader(n *html.Node) *react.HeaderElem {
 
@@ -1312,7 +1293,6 @@ func parseHeader(n *html.Node) *react.HeaderElem {
 	}
 
 	return react.Header(vp, kids...)
-
 }
 func parseHr(n *html.Node) *react.HrElem {
 
@@ -1363,7 +1343,6 @@ func parseHr(n *html.Node) *react.HrElem {
 	}
 
 	return react.Hr(vp)
-
 }
 func parseI(n *html.Node) *react.IElem {
 
@@ -1420,7 +1399,6 @@ func parseI(n *html.Node) *react.IElem {
 	}
 
 	return react.I(vp, kids...)
-
 }
 func parseIFrame(n *html.Node) *react.IFrameElem {
 
@@ -1480,7 +1458,6 @@ func parseIFrame(n *html.Node) *react.IFrameElem {
 	}
 
 	return react.IFrame(vp, kids...)
-
 }
 func parseImg(n *html.Node) *react.ImgElem {
 
@@ -1543,7 +1520,6 @@ func parseImg(n *html.Node) *react.ImgElem {
 	}
 
 	return react.Img(vp, kids...)
-
 }
 func parseInput(n *html.Node) *react.InputElem {
 
@@ -1609,7 +1585,6 @@ func parseInput(n *html.Node) *react.InputElem {
 	}
 
 	return react.Input(vp, kids...)
-
 }
 func parseLabel(n *html.Node) *react.LabelElem {
 
@@ -1669,7 +1644,6 @@ func parseLabel(n *html.Node) *react.LabelElem {
 	}
 
 	return react.Label(vp, kids...)
-
 }
 func parseLi(n *html.Node) *react.LiElem {
 
@@ -1726,7 +1700,6 @@ func parseLi(n *html.Node) *react.LiElem {
 	}
 
 	return react.Li(vp, kids...)
-
 }
 func parseMain(n *html.Node) *react.MainElem {
 
@@ -1783,7 +1756,6 @@ func parseMain(n *html.Node) *react.MainElem {
 	}
 
 	return react.Main(vp, kids...)
-
 }
 func parseNav(n *html.Node) *react.NavElem {
 
@@ -1840,7 +1812,6 @@ func parseNav(n *html.Node) *react.NavElem {
 	}
 
 	return react.Nav(vp, kids...)
-
 }
 func parseOption(n *html.Node) *react.OptionElem {
 
@@ -1900,7 +1871,6 @@ func parseOption(n *html.Node) *react.OptionElem {
 	}
 
 	return react.Option(vp, kids...)
-
 }
 func parseP(n *html.Node) *react.PElem {
 
@@ -1957,7 +1927,6 @@ func parseP(n *html.Node) *react.PElem {
 	}
 
 	return react.P(vp, kids...)
-
 }
 func parsePre(n *html.Node) *react.PreElem {
 
@@ -2014,7 +1983,6 @@ func parsePre(n *html.Node) *react.PreElem {
 	}
 
 	return react.Pre(vp, kids...)
-
 }
 func parseSelect(n *html.Node) *react.SelectElem {
 
@@ -2074,7 +2042,6 @@ func parseSelect(n *html.Node) *react.SelectElem {
 	}
 
 	return react.Select(vp, kids...)
-
 }
 func parseSpan(n *html.Node) *react.SpanElem {
 
@@ -2131,7 +2098,6 @@ func parseSpan(n *html.Node) *react.SpanElem {
 	}
 
 	return react.Span(vp, kids...)
-
 }
 func parseStrike(n *html.Node) *react.StrikeElem {
 
@@ -2188,7 +2154,6 @@ func parseStrike(n *html.Node) *react.StrikeElem {
 	}
 
 	return react.Strike(vp, kids...)
-
 }
 func parseSup(n *html.Node) *react.SupElem {
 
@@ -2245,7 +2210,6 @@ func parseSup(n *html.Node) *react.SupElem {
 	}
 
 	return react.Sup(vp, kids...)
-
 }
 func parseTable(n *html.Node) *react.TableElem {
 
@@ -2302,7 +2266,6 @@ func parseTable(n *html.Node) *react.TableElem {
 	}
 
 	return react.Table(vp, kids...)
-
 }
 func parseTbody(n *html.Node) *react.TbodyElem {
 
@@ -2359,7 +2322,6 @@ func parseTbody(n *html.Node) *react.TbodyElem {
 	}
 
 	return react.Tbody(vp, kids...)
-
 }
 func parseTd(n *html.Node) *react.TdElem {
 
@@ -2416,7 +2378,6 @@ func parseTd(n *html.Node) *react.TdElem {
 	}
 
 	return react.Td(vp, kids...)
-
 }
 func parseTextArea(n *html.Node) *react.TextAreaElem {
 
@@ -2479,7 +2440,6 @@ func parseTextArea(n *html.Node) *react.TextAreaElem {
 	}
 
 	return react.TextArea(vp, kids...)
-
 }
 func parseTh(n *html.Node) *react.ThElem {
 
@@ -2536,7 +2496,6 @@ func parseTh(n *html.Node) *react.ThElem {
 	}
 
 	return react.Th(vp, kids...)
-
 }
 func parseThead(n *html.Node) *react.TheadElem {
 
@@ -2593,7 +2552,6 @@ func parseThead(n *html.Node) *react.TheadElem {
 	}
 
 	return react.Thead(vp, kids...)
-
 }
 func parseTr(n *html.Node) *react.TrElem {
 
@@ -2650,7 +2608,6 @@ func parseTr(n *html.Node) *react.TrElem {
 	}
 
 	return react.Tr(vp, kids...)
-
 }
 func parseUl(n *html.Node) *react.UlElem {
 
@@ -2707,5 +2664,4 @@ func parseUl(n *html.Node) *react.UlElem {
 	}
 
 	return react.Ul(vp, kids...)
-
 }

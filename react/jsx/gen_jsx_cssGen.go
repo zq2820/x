@@ -44,6 +44,9 @@ func parseCSS(s string) *react.CSS {
 		case "left":
 			res.Left = v
 
+		case "margin":
+			res.Margin = v
+
 		case "margin-top":
 			res.MarginTop = v
 

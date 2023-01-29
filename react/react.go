@@ -110,7 +110,7 @@ func Sprintf(format string, args ...interface{}) S {
 }
 
 func Sprintln[T any](args []T) S {
-	_args := make([]interface{}, len(args), len(args))
+	_args := make([]interface{}, len(args))
 	for i, val := range args {
 		_args[i] = val
 	}
@@ -379,7 +379,7 @@ func buildReactComponent[P Props, S State](typ reflect.Type, builder ComponentBu
 	if typ != nil {
 		compDef.Set(reactCompDisplayName, fmt.Sprintf("%v(%v)", typ.Name(), typ.PkgPath()))
 	} else {
-		compDef.Set(reactCompDisplayName, fmt.Sprintf("HotComponent(myitcv.io/react)"))
+		compDef.Set(reactCompDisplayName, "HotComponent(myitcv.io/react)")
 	}
 	compDef.Set(reactComponentBuilder, builder)
 

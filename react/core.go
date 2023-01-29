@@ -39,20 +39,26 @@ type Ref interface {
 	Ref(h *js.Object)
 }
 
-type OnChange interface {
-	Event
+type OnChange func(e *SyntheticEvent)
 
-	OnChange(e *SyntheticEvent)
-}
+type OnClick func(e *SyntheticMouseEvent)
 
-type OnClick interface {
-	Event
+type OnSubmit func(e *SyntheticEvent)
 
-	OnClick(e *SyntheticMouseEvent)
-}
+// type OnChange interface {
+// 	Event
 
-type OnSubmit interface {
-	Event
+// 	OnChange(e *SyntheticEvent)
+// }
 
-	OnSubmit(e *SyntheticEvent)
-}
+// type OnClick interface {
+// 	Event
+
+// 	OnClick(e *SyntheticMouseEvent)
+// }
+
+// type OnSubmit interface {
+// 	Event
+
+// 	OnSubmit(e *SyntheticEvent)
+// }

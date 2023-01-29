@@ -82,10 +82,10 @@ func A(props *AProps, children ...Element) *AElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -175,10 +175,10 @@ func Abbr(props *AbbrProps, children ...Element) *AbbrElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -265,10 +265,10 @@ func Article(props *ArticleProps, children ...Element) *ArticleElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -355,10 +355,10 @@ func Aside(props *AsideProps, children ...Element) *AsideElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -445,10 +445,10 @@ func B(props *BProps, children ...Element) *BElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -535,10 +535,10 @@ func Br(props *BrProps, children ...Element) *BrElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -632,10 +632,10 @@ func Button(props *ButtonProps, children ...Element) *ButtonElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -723,10 +723,10 @@ func Caption(props *CaptionProps, children ...Element) *CaptionElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -813,10 +813,10 @@ func Code(props *CodeProps, children ...Element) *CodeElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -903,10 +903,10 @@ func Div(props *DivProps, children ...Element) *DivElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -993,10 +993,10 @@ func Em(props *EmProps, children ...Element) *EmElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1083,10 +1083,10 @@ func Footer(props *FooterProps, children ...Element) *FooterElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1175,13 +1175,13 @@ func Form(props *FormProps, children ...Element) *FormElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.OnSubmit != nil {
-			rprops.o.Set("onSubmit", props.OnSubmit.OnSubmit)
+			rprops.o.Set("onSubmit", props.OnSubmit)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1268,10 +1268,10 @@ func H1(props *H1Props, children ...Element) *H1Elem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1358,10 +1358,10 @@ func H2(props *H2Props, children ...Element) *H2Elem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1448,10 +1448,10 @@ func H3(props *H3Props, children ...Element) *H3Elem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1538,10 +1538,10 @@ func H4(props *H4Props, children ...Element) *H4Elem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1628,10 +1628,10 @@ func H5(props *H5Props, children ...Element) *H5Elem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1718,10 +1718,10 @@ func H6(props *H6Props, children ...Element) *H6Elem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1808,10 +1808,10 @@ func Header(props *HeaderProps, children ...Element) *HeaderElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1898,10 +1898,10 @@ func Hr(props *HrProps) *HrElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -1988,10 +1988,10 @@ func I(props *IProps, children ...Element) *IElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2080,10 +2080,10 @@ func IFrame(props *IFrameProps, children ...Element) *IFrameElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2178,10 +2178,10 @@ func Img(props *ImgProps, children ...Element) *ImgElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2276,10 +2276,10 @@ func Input(props *InputProps, children ...Element) *InputElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		rprops.Placeholder = props.Placeholder
 
@@ -2375,10 +2375,10 @@ func Label(props *LabelProps, children ...Element) *LabelElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2467,10 +2467,10 @@ func Li(props *LiProps, children ...Element) *LiElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2557,10 +2557,10 @@ func Main(props *MainProps, children ...Element) *MainElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2647,10 +2647,10 @@ func Nav(props *NavProps, children ...Element) *NavElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2739,10 +2739,10 @@ func Option(props *OptionProps, children ...Element) *OptionElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2830,10 +2830,10 @@ func P(props *PProps, children ...Element) *PElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -2920,10 +2920,10 @@ func Pre(props *PreProps, children ...Element) *PreElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3017,10 +3017,10 @@ func Select(props *SelectProps, children ...*OptionElem) *SelectElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3108,10 +3108,10 @@ func Span(props *SpanProps, children ...Element) *SpanElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3198,10 +3198,10 @@ func Strike(props *StrikeProps, children ...Element) *StrikeElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3288,10 +3288,10 @@ func Sup(props *SupProps, children ...Element) *SupElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3378,10 +3378,10 @@ func Table(props *TableProps, children ...Element) *TableElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3468,10 +3468,10 @@ func Tbody(props *TbodyProps, children ...Element) *TbodyElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3558,10 +3558,10 @@ func Td(props *TdProps, children ...Element) *TdElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3652,10 +3652,10 @@ func TextArea(props *TextAreaProps, children ...Element) *TextAreaElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		rprops.Placeholder = props.Placeholder
 
@@ -3745,10 +3745,10 @@ func Th(props *ThProps, children ...Element) *ThElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3835,10 +3835,10 @@ func Thead(props *TheadProps, children ...Element) *TheadElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -3925,10 +3925,10 @@ func Tr(props *TrProps, children ...Element) *TrElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)
@@ -4020,10 +4020,10 @@ func Ul(props *UlProps, children ...RendersLi) *UlElem {
 			rprops.Key = props.Key
 		}
 		if props.OnChange != nil {
-			rprops.o.Set("onChange", props.OnChange.OnChange)
+			rprops.o.Set("onChange", props.OnChange)
 		}
 		if props.OnClick != nil {
-			rprops.o.Set("onClick", props.OnClick.OnClick)
+			rprops.o.Set("onClick", props.OnClick)
 		}
 		if props.Ref != nil {
 			rprops.o.Set("ref", props.Ref.Ref)

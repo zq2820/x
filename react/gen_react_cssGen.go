@@ -16,7 +16,7 @@ type CSS struct {
 	FontWeight string
 	Height     string
 	Left       string
-	Margin		 string
+	Margin     string
 	MarginTop  string
 	MaxHeight  string
 	MinHeight  string
@@ -33,10 +33,6 @@ type CSS struct {
 // https://github.com/gopherjs/gopherjs/issues/236 we define hack() below
 
 func (c *CSS) hack() *CSS {
-	return Hack(c)
-}
-
-func Hack(c *CSS) *CSS {
 	if c == nil {
 		return nil
 	}
