@@ -18,8 +18,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/gopherjs/gopherjs/es"
-
 	"github.com/gopherjs/gopherjs/chunks"
 	"github.com/gopherjs/gopherjs/js"
 	"honnef.co/go/js/dom"
@@ -57,37 +55,23 @@ const (
 	nestedComponentWrapper = "__ComponentWrapper"
 )
 
-var jsFragment = es.ImportNodeModule("react", "Fragment", es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
+var jsFragment = js.Reference("Fragment")
 
-var jsCreateElement = es.ImportNodeModule("react", "createElement", es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
+var jsCreateElement = js.Reference("createElement")
 
-var jsCreateClass = es.ImportNodeModule("create-react-class", "createClass", es.ImportOptions{
-	Method: es.DEFAULT,
-})
+var jsCreateClass = js.Reference("createClass")
 
-var jsUseState = es.ImportNodeModule("react", "useState", es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-var jsUseEffect = es.ImportNodeModule("react", "useEffect", es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-var jsUseRef = es.ImportNodeModule("react", "useRef", es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-var jsUseCallback = es.ImportNodeModule("react", "useCallback", es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
-var jsUseMemo = es.ImportNodeModule("react", "useMemo", es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
+var jsUseState = js.Reference("useState")
 
-var jsDOMRender = es.ImportNodeModule("react-dom", "render", es.ImportOptions{
-	Method: es.NOT_DEFAULT,
-})
+var jsUseEffect = js.Reference("useEffect")
+
+var jsUseRef = js.Reference("useRef")
+
+var jsUseCallback = js.Reference("useCallback")
+
+var jsUseMemo = js.Reference("useMemo")
+
+var jsDOMRender = js.Reference("render")
 
 var object = js.Global.Get("Object")
 

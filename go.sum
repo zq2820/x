@@ -151,8 +151,8 @@ github.com/wellington/go-libsass v0.9.2/go.mod h1:mxgxgam0N0E+NAUMHLcu20Ccfc3mVp
 github.com/xanzy/ssh-agent v0.3.0/go.mod h1:3s9xbODqPuuhK9JV1R321M/FlMZSBvE5aY6eAcqrDh0=
 github.com/xanzy/ssh-agent v0.3.1 h1:AmzO1SSWxw73zxFZPRwaMN1MohDw8UyHnmuxyceTEGo=
 github.com/xanzy/ssh-agent v0.3.1/go.mod h1:QIE4lCeL7nkC25x+yA3LBIYfwCc1TFziCtG7cBAac6w=
-github.com/zq2820/gopherjs v0.0.0-20221128103609-c564e1686a09 h1:U0i3b9uZpeLdb8hHJe9mBDFXyHwp1yHrZkf3GbRDncc=
-github.com/zq2820/gopherjs v0.0.0-20221128103609-c564e1686a09/go.mod h1:qPY4KUETIWzsIAgrpoLWzNABlaAHZ5h2vfA1WAMBD2I=
+github.com/zq2820/gopherjs v0.0.0-20230130021151-2cdbc669807f h1:Q7K/VZTQQ3lk2KLxGxJHTBrjsrd1EMK4drXQa1PWa8c=
+github.com/zq2820/gopherjs v0.0.0-20230130021151-2cdbc669807f/go.mod h1:GBn3Fvdu/OAQKeyML5jyImUuWWP5BEWTv8TImmcmHuM=
 golang.org/x/crypto v0.0.0-20180820150726-614d502a4dac/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20181106171534-e4dc69e5b2fd/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190219172222-a4c6cb3142f2/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=

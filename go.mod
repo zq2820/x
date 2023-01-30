@@ -74,4 +74,4 @@ require (
 	mvdan.cc/sh/v3 v3.0.0-alpha1 // indirect
 )
 
-replace github.com/gopherjs/gopherjs v1.17.2 => github.com/zq2820/gopherjs v0.0.0-20221128103609-c564e1686a09
+replace github.com/gopherjs/gopherjs v1.17.2 => github.com/zq2820/gopherjs v0.0.0-20230130021151-2cdbc669807f
