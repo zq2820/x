@@ -118,7 +118,7 @@ func Sprintln[T any](args []T) S {
 	return S(fmt.Sprintln(_args...))
 }
 
-type elementHolder = core.ElementHolder
+type ElementHolder = core.ElementHolder
 
 type Element = core.Element
 
@@ -287,7 +287,7 @@ func buildClassComponent[P Props, S State](buildCmp func(elem ComponentDef[P, S]
 		args = append(args, v)
 	}
 
-	return &elementHolder{
+	return &ElementHolder{
 		Elem: jsCreateElement.Invoke(args...),
 	}
 }
@@ -343,7 +343,7 @@ func CreateElement[P Props](component interface{}, props P, children ...Element)
 								args = append(args, elem.elem.Get(reactCompProps))
 								args = append(args, children)
 
-								return &elementHolder{
+								return &ElementHolder{
 									Elem: jsCreateElement.Invoke(args...),
 								}
 							}
@@ -368,7 +368,7 @@ func createElement(cmp interface{}, props interface{}, children ...Element) Elem
 		args = append(args, v)
 	}
 
-	return &elementHolder{
+	return &ElementHolder{
 		Elem: jsCreateElement.Invoke(args...),
 	}
 }
@@ -520,7 +520,7 @@ func Render(el Element, container dom.Element) Element {
 	v := jsDOMRender.Invoke(el, container)
 	// compMap = make(map[string]*js.Object)
 
-	return &elementHolder{Elem: v}
+	return &ElementHolder{Elem: v}
 }
 
 func CreateFunctionElement[P Props](cmp interface{}, props P, children ...Element) Element {
@@ -548,7 +548,7 @@ func CreateFunctionElement[P Props](cmp interface{}, props P, children ...Elemen
 		args = append(args, v)
 	}
 
-	return &elementHolder{
+	return &ElementHolder{
 		Elem: jsCreateElement.Invoke(args...),
 	}
 }
