@@ -305,7 +305,7 @@ func {{.Name}}(props *{{.Name}}Props, {{.ChildParam}}) *{{.Name}}Elem {
 	}
 
 	return &{{.Name}}Elem{
-		Element: createElement("{{.React}}", rprops, {{.ChildArg}}),
+		Element: CreateJSElement("{{.React}}", rprops, {{.ChildArg}}),
 	}
 }
 		`, e)

@@ -101,7 +101,7 @@ func A(props *AProps, children ...Element) *AElem {
 	}
 
 	return &AElem{
-		Element: createElement("a", rprops, children...),
+		Element: CreateJSElement("a", rprops, children...),
 	}
 }
 
@@ -191,7 +191,7 @@ func Abbr(props *AbbrProps, children ...Element) *AbbrElem {
 	}
 
 	return &AbbrElem{
-		Element: createElement("abbr", rprops, children...),
+		Element: CreateJSElement("abbr", rprops, children...),
 	}
 }
 
@@ -281,7 +281,7 @@ func Article(props *ArticleProps, children ...Element) *ArticleElem {
 	}
 
 	return &ArticleElem{
-		Element: createElement("article", rprops, children...),
+		Element: CreateJSElement("article", rprops, children...),
 	}
 }
 
@@ -371,7 +371,7 @@ func Aside(props *AsideProps, children ...Element) *AsideElem {
 	}
 
 	return &AsideElem{
-		Element: createElement("aside", rprops, children...),
+		Element: CreateJSElement("aside", rprops, children...),
 	}
 }
 
@@ -461,7 +461,7 @@ func B(props *BProps, children ...Element) *BElem {
 	}
 
 	return &BElem{
-		Element: createElement("b", rprops, children...),
+		Element: CreateJSElement("b", rprops, children...),
 	}
 }
 
@@ -551,7 +551,7 @@ func Br(props *BrProps, children ...Element) *BrElem {
 	}
 
 	return &BrElem{
-		Element: createElement("br", rprops, children...),
+		Element: CreateJSElement("br", rprops, children...),
 	}
 }
 
@@ -649,7 +649,7 @@ func Button(props *ButtonProps, children ...Element) *ButtonElem {
 	}
 
 	return &ButtonElem{
-		Element: createElement("button", rprops, children...),
+		Element: CreateJSElement("button", rprops, children...),
 	}
 }
 
@@ -739,7 +739,7 @@ func Caption(props *CaptionProps, children ...Element) *CaptionElem {
 	}
 
 	return &CaptionElem{
-		Element: createElement("caption", rprops, children...),
+		Element: CreateJSElement("caption", rprops, children...),
 	}
 }
 
@@ -829,7 +829,7 @@ func Code(props *CodeProps, children ...Element) *CodeElem {
 	}
 
 	return &CodeElem{
-		Element: createElement("code", rprops, children...),
+		Element: CreateJSElement("code", rprops, children...),
 	}
 }
 
@@ -919,7 +919,7 @@ func Div(props *DivProps, children ...Element) *DivElem {
 	}
 
 	return &DivElem{
-		Element: createElement("div", rprops, children...),
+		Element: CreateJSElement("div", rprops, children...),
 	}
 }
 
@@ -1009,7 +1009,7 @@ func Em(props *EmProps, children ...Element) *EmElem {
 	}
 
 	return &EmElem{
-		Element: createElement("em", rprops, children...),
+		Element: CreateJSElement("em", rprops, children...),
 	}
 }
 
@@ -1099,7 +1099,7 @@ func Footer(props *FooterProps, children ...Element) *FooterElem {
 	}
 
 	return &FooterElem{
-		Element: createElement("footer", rprops, children...),
+		Element: CreateJSElement("footer", rprops, children...),
 	}
 }
 
@@ -1194,7 +1194,7 @@ func Form(props *FormProps, children ...Element) *FormElem {
 	}
 
 	return &FormElem{
-		Element: createElement("form", rprops, children...),
+		Element: CreateJSElement("form", rprops, children...),
 	}
 }
 
@@ -1284,7 +1284,7 @@ func H1(props *H1Props, children ...Element) *H1Elem {
 	}
 
 	return &H1Elem{
-		Element: createElement("h1", rprops, children...),
+		Element: CreateJSElement("h1", rprops, children...),
 	}
 }
 
@@ -1374,7 +1374,7 @@ func H2(props *H2Props, children ...Element) *H2Elem {
 	}
 
 	return &H2Elem{
-		Element: createElement("h2", rprops, children...),
+		Element: CreateJSElement("h2", rprops, children...),
 	}
 }
 
@@ -1464,7 +1464,7 @@ func H3(props *H3Props, children ...Element) *H3Elem {
 	}
 
 	return &H3Elem{
-		Element: createElement("h3", rprops, children...),
+		Element: CreateJSElement("h3", rprops, children...),
 	}
 }
 
@@ -1554,7 +1554,7 @@ func H4(props *H4Props, children ...Element) *H4Elem {
 	}
 
 	return &H4Elem{
-		Element: createElement("h4", rprops, children...),
+		Element: CreateJSElement("h4", rprops, children...),
 	}
 }
 
@@ -1644,7 +1644,7 @@ func H5(props *H5Props, children ...Element) *H5Elem {
 	}
 
 	return &H5Elem{
-		Element: createElement("h5", rprops, children...),
+		Element: CreateJSElement("h5", rprops, children...),
 	}
 }
 
@@ -1734,7 +1734,7 @@ func H6(props *H6Props, children ...Element) *H6Elem {
 	}
 
 	return &H6Elem{
-		Element: createElement("h6", rprops, children...),
+		Element: CreateJSElement("h6", rprops, children...),
 	}
 }
 
@@ -1824,7 +1824,7 @@ func Header(props *HeaderProps, children ...Element) *HeaderElem {
 	}
 
 	return &HeaderElem{
-		Element: createElement("header", rprops, children...),
+		Element: CreateJSElement("header", rprops, children...),
 	}
 }
 
@@ -1914,7 +1914,7 @@ func Hr(props *HrProps) *HrElem {
 	}
 
 	return &HrElem{
-		Element: createElement("hr", rprops),
+		Element: CreateJSElement("hr", rprops),
 	}
 }
 
@@ -2004,7 +2004,7 @@ func I(props *IProps, children ...Element) *IElem {
 	}
 
 	return &IElem{
-		Element: createElement("i", rprops, children...),
+		Element: CreateJSElement("i", rprops, children...),
 	}
 }
 
@@ -2098,7 +2098,7 @@ func IFrame(props *IFrameProps, children ...Element) *IFrameElem {
 	}
 
 	return &IFrameElem{
-		Element: createElement("iframe", rprops, children...),
+		Element: CreateJSElement("iframe", rprops, children...),
 	}
 }
 
@@ -2196,7 +2196,7 @@ func Img(props *ImgProps, children ...Element) *ImgElem {
 	}
 
 	return &ImgElem{
-		Element: createElement("img", rprops, children...),
+		Element: CreateJSElement("img", rprops, children...),
 	}
 }
 
@@ -2297,7 +2297,7 @@ func Input(props *InputProps, children ...Element) *InputElem {
 	}
 
 	return &InputElem{
-		Element: createElement("input", rprops, children...),
+		Element: CreateJSElement("input", rprops, children...),
 	}
 }
 
@@ -2391,7 +2391,7 @@ func Label(props *LabelProps, children ...Element) *LabelElem {
 	}
 
 	return &LabelElem{
-		Element: createElement("label", rprops, children...),
+		Element: CreateJSElement("label", rprops, children...),
 	}
 }
 
@@ -2483,7 +2483,7 @@ func Li(props *LiProps, children ...Element) *LiElem {
 	}
 
 	return &LiElem{
-		Element: createElement("li", rprops, children...),
+		Element: CreateJSElement("li", rprops, children...),
 	}
 }
 
@@ -2573,7 +2573,7 @@ func Main(props *MainProps, children ...Element) *MainElem {
 	}
 
 	return &MainElem{
-		Element: createElement("main", rprops, children...),
+		Element: CreateJSElement("main", rprops, children...),
 	}
 }
 
@@ -2663,7 +2663,7 @@ func Nav(props *NavProps, children ...Element) *NavElem {
 	}
 
 	return &NavElem{
-		Element: createElement("nav", rprops, children...),
+		Element: CreateJSElement("nav", rprops, children...),
 	}
 }
 
@@ -2756,7 +2756,7 @@ func Option(props *OptionProps, children ...Element) *OptionElem {
 	}
 
 	return &OptionElem{
-		Element: createElement("option", rprops, children...),
+		Element: CreateJSElement("option", rprops, children...),
 	}
 }
 
@@ -2846,7 +2846,7 @@ func P(props *PProps, children ...Element) *PElem {
 	}
 
 	return &PElem{
-		Element: createElement("p", rprops, children...),
+		Element: CreateJSElement("p", rprops, children...),
 	}
 }
 
@@ -2936,7 +2936,7 @@ func Pre(props *PreProps, children ...Element) *PreElem {
 	}
 
 	return &PreElem{
-		Element: createElement("pre", rprops, children...),
+		Element: CreateJSElement("pre", rprops, children...),
 	}
 }
 
@@ -3034,7 +3034,7 @@ func Select(props *SelectProps, children ...*OptionElem) *SelectElem {
 	}
 
 	return &SelectElem{
-		Element: createElement("select", rprops, elems...),
+		Element: CreateJSElement("select", rprops, elems...),
 	}
 }
 
@@ -3124,7 +3124,7 @@ func Span(props *SpanProps, children ...Element) *SpanElem {
 	}
 
 	return &SpanElem{
-		Element: createElement("span", rprops, children...),
+		Element: CreateJSElement("span", rprops, children...),
 	}
 }
 
@@ -3214,7 +3214,7 @@ func Strike(props *StrikeProps, children ...Element) *StrikeElem {
 	}
 
 	return &StrikeElem{
-		Element: createElement("s", rprops, children...),
+		Element: CreateJSElement("s", rprops, children...),
 	}
 }
 
@@ -3304,7 +3304,7 @@ func Sup(props *SupProps, children ...Element) *SupElem {
 	}
 
 	return &SupElem{
-		Element: createElement("sup", rprops, children...),
+		Element: CreateJSElement("sup", rprops, children...),
 	}
 }
 
@@ -3394,7 +3394,7 @@ func Table(props *TableProps, children ...Element) *TableElem {
 	}
 
 	return &TableElem{
-		Element: createElement("table", rprops, children...),
+		Element: CreateJSElement("table", rprops, children...),
 	}
 }
 
@@ -3484,7 +3484,7 @@ func Tbody(props *TbodyProps, children ...Element) *TbodyElem {
 	}
 
 	return &TbodyElem{
-		Element: createElement("tbody", rprops, children...),
+		Element: CreateJSElement("tbody", rprops, children...),
 	}
 }
 
@@ -3574,7 +3574,7 @@ func Td(props *TdProps, children ...Element) *TdElem {
 	}
 
 	return &TdElem{
-		Element: createElement("td", rprops, children...),
+		Element: CreateJSElement("td", rprops, children...),
 	}
 }
 
@@ -3671,7 +3671,7 @@ func TextArea(props *TextAreaProps, children ...Element) *TextAreaElem {
 	}
 
 	return &TextAreaElem{
-		Element: createElement("textarea", rprops, children...),
+		Element: CreateJSElement("textarea", rprops, children...),
 	}
 }
 
@@ -3761,7 +3761,7 @@ func Th(props *ThProps, children ...Element) *ThElem {
 	}
 
 	return &ThElem{
-		Element: createElement("th", rprops, children...),
+		Element: CreateJSElement("th", rprops, children...),
 	}
 }
 
@@ -3851,7 +3851,7 @@ func Thead(props *TheadProps, children ...Element) *TheadElem {
 	}
 
 	return &TheadElem{
-		Element: createElement("thead", rprops, children...),
+		Element: CreateJSElement("thead", rprops, children...),
 	}
 }
 
@@ -3941,7 +3941,7 @@ func Tr(props *TrProps, children ...Element) *TrElem {
 	}
 
 	return &TrElem{
-		Element: createElement("tr", rprops, children...),
+		Element: CreateJSElement("tr", rprops, children...),
 	}
 }
 
@@ -4036,6 +4036,6 @@ func Ul(props *UlProps, children ...RendersLi) *UlElem {
 	}
 
 	return &UlElem{
-		Element: createElement("ul", rprops, elems...),
+		Element: CreateJSElement("ul", rprops, elems...),
 	}
 }

@@ -345,7 +345,7 @@ func CreateElement[P Props](component interface{}, props P, children ...Element)
 	return nil
 }
 
-func createElement(cmp interface{}, props interface{}, children ...Element) Element {
+func CreateJSElement(cmp interface{}, props interface{}, children ...Element) Element {
 	args := []interface{}{cmp, props}
 
 	for _, v := range children {
